@@ -1,0 +1,33 @@
+#!/usr/bin/env python3
+"""
+Configuration centralisée pour les scripts Grafana
+EXEMPLE - Copier ce fichier en config.py et remplir avec vos valeurs
+"""
+
+# Configuration du serveur Grafana
+GRAFANA_URL = "https://votre-grafana.example.com"
+
+# API Token (recommandé)
+API_TOKEN = "glsa_VOTRE_TOKEN_ICI"
+
+# Seuils d'alertes
+DISK_USAGE_THRESHOLD = 60  # Pourcentage d'utilisation disque avant alerte
+HOST_NO_DATA_MINUTES = 2   # Nombre de minutes sans données avant alerte host
+
+# Configuration des seuils de température par capteur
+TEMPERATURE_THRESHOLDS = {
+    "1": {"name": "Capteur 1", "min": 18.0, "max": 25.0},
+    "2": {"name": "Capteur 2", "min": 15.0, "max": 30.0},
+    "3": {"name": "Capteur 3", "min": 10.0, "max": 20.0},
+}
+SENSOR_NO_DATA_MINUTES = 10  # Nombre de minutes sans données avant alerte capteur
+BATTERY_LOW_THRESHOLD = 20   # Pourcentage de batterie minimum avant alerte
+
+# Configuration SMTP pour l'envoi d'emails
+SMTP_SERVER = "smtp.example.com"  # ou smtp.gmail.com, smtp.office365.com, ssl0.ovh.net, etc.
+SMTP_PORT = 465  # 587 pour TLS, 465 pour SSL, 25 pour sans chiffrement
+SMTP_USE_TLS = False  # True pour TLS (port 587)
+SMTP_USERNAME = "votre-email@example.com"  # Login SMTP
+SMTP_PASSWORD = "votre-mot-de-passe"  # Mot de passe SMTP
+FROM_EMAIL = "expediteur@example.com"  # Expéditeur des emails
+TO_EMAIL = "destinataire@example.com"  # Destinataire des alertes
