@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 from config import (
     GRAFANA_URL, API_TOKEN, DISK_USAGE_THRESHOLD, HOST_NO_DATA_MINUTES,
-    SMTP_SERVER, SMTP_PORT, SMTP_USE_TLS, SMTP_USERNAME, SMTP_PASSWORD,
+    DISK_EXCLUDED_HOSTS, LOAD1_THRESHOLD, SMTP_SERVER, SMTP_PORT, SMTP_USE_TLS, SMTP_USERNAME, SMTP_PASSWORD,
     FROM_EMAIL, TO_EMAIL
 )
 from grafana_utils import (
@@ -68,27 +68,99 @@ def get_disk_usage():
     
     return hosts_data
 
-def send_summary_email(all_hosts, alerts, threshold, no_data_minutes):
-    """Envoie un email récapitulatif avec toutes les alertes"""
+def get_load_averages():
+    """Récupère la moyenne du load1 sur les 15 dernières minutes pour chaque host"""
+    datasources = get_datasources(GRAFANA_URL, API_TOKEN)
+    default_ds = find_default_datasource(datasources)
     
+    if not default_ds:
+        return {}
+    
+    # Requête avec timezone Paris pour correspondre à la configuration du serveur
+    sql = """
+    SELECT
+      host,
+      round(avg(load1)::numeric, 1) AS load1
+    FROM system
+    WHERE
+      time >= (CURRENT_TIMESTAMP AT TIME ZONE 'UTC' AT TIME ZONE 'Europe/Paris') - INTERVAL '60 minutes'
+      AND load1 IS NOT NULL
+    GROUP BY host
+    ORDER BY host
+    """
+    
+    results = query_timescale(GRAFANA_URL, API_TOKEN, default_ds.get('uid'), sql)
+    
+    if not results or 'results' not in results:
+        return {}
+    
+    # Extraire les données
+    load_data = {}
+    for result in results.get('results', {}).values():
+        if 'frames' in result:
+            for frame in result['frames']:
+                data_values = frame.get('data', {}).get('values', [])
+                
+                if len(data_values) >= 2:
+                    hosts = data_values[0]
+                    loads = data_values[1]
+                    
+                    for i in range(len(hosts)):
+                        load_data[hosts[i]] = round(loads[i], 2)
+    
+    return load_data
+
+def build_subject(all_hosts, threshold, no_data_minutes):
+    """Construit le sujet de l'email basé sur les alertes actives"""
     nb_total = len(all_hosts)
-    nb_alerts = len(alerts)
-    nb_ok = nb_total - nb_alerts
     
     # Calculer le nombre de hosts sans données récentes
     now = datetime.now(timezone.utc)
     hosts_no_data = [h for h in all_hosts if (now - h['last_contact']).total_seconds() > no_data_minutes * 60]
     nb_no_data = len(hosts_no_data)
     
-    # Icônes pour le sujet
-    disk_icon = "🟠" if nb_alerts > 0 else "✅"
-    contact_icon = "🔴" if nb_no_data > 0 else "✅"
+    # Calculer le nombre de hosts avec alerte disque et load1
+    nb_disk_alerts = len([h for h in all_hosts if h['usage'] > threshold])
+    nb_load_alerts = len([h for h in all_hosts if h.get('load1') is not None and h['load1'] > LOAD1_THRESHOLD])
     
     # Date et heure pour le sujet
     now_paris = datetime.now(ZoneInfo('Europe/Paris'))
     date_time_str = now_paris.strftime('%d/%m %H:%M')
     
-    subject = f"[Grafana] {date_time_str} {disk_icon} {nb_alerts}/{nb_total} alerte espace disque (>{threshold}%) et {contact_icon} {nb_no_data}/{nb_total} alerte contact (>{no_data_minutes}mn)"
+    # Construire le sujet avec uniquement les alertes actives
+    subject_parts = [f"[Grafana] {date_time_str}"]
+    
+    if nb_disk_alerts > 0:
+        subject_parts.append(f"🟠 {nb_disk_alerts}/{nb_total} disque (>{threshold}%)")
+    if nb_load_alerts > 0:
+        subject_parts.append(f"🟠 {nb_load_alerts}/{nb_total} load1 (>{LOAD1_THRESHOLD})")
+    if nb_no_data > 0:
+        subject_parts.append(f"🔴 {nb_no_data}/{nb_total} contact (>{no_data_minutes}mn)")
+    
+    # Si aucune alerte, indiquer juste le nombre de serveurs surveillés
+    if nb_disk_alerts == 0 and nb_load_alerts == 0 and nb_no_data == 0:
+        subject_parts.append(f"✅ {nb_total} serveurs OK")
+    
+    return " ".join(subject_parts)
+
+def send_summary_email(all_hosts, alerts, threshold, no_data_minutes, excluded_hosts):
+    """Envoie un email récapitulatif avec toutes les alertes"""
+    
+    nb_total = len(all_hosts)
+    nb_alerts = len(alerts)
+    nb_excluded = len(excluded_hosts)
+    
+    # Calculer le nombre de hosts sans données récentes
+    now = datetime.now(timezone.utc)
+    hosts_no_data = [h for h in all_hosts if (now - h['last_contact']).total_seconds() > no_data_minutes * 60]
+    nb_no_data = len(hosts_no_data)
+    
+    # Calculer le nombre de hosts avec alerte disque et load1
+    nb_disk_alerts = len([h for h in all_hosts if h['usage'] > threshold])
+    nb_load_alerts = len([h for h in all_hosts if h.get('load1') is not None and h['load1'] > LOAD1_THRESHOLD])
+    
+    # Construire le sujet
+    subject = build_subject(all_hosts, threshold, no_data_minutes)
     
     # Construction du tableau HTML
     html_body = f"""
@@ -100,7 +172,7 @@ def send_summary_email(all_hosts, alerts, threshold, no_data_minutes):
         table {{ border-collapse: collapse; width: 700px; margin-top: 10px; font-size: 12px; }}
         th {{ background-color: #4CAF50; color: white; padding: 3px; text-align: left; font-size: 14px; }}
         td {{ padding: 3px; border-bottom: 1px solid #ddd; }}
-        td:nth-child(3), td:nth-child(4) {{ text-align: right; }}
+        td:nth-child(3), td:nth-child(4), td:nth-child(5) {{ text-align: right; }}
         tr:hover {{ background-color: #f5f5f5; }}
         .ok {{ color: green; font-size: 14px; }}
         .alert {{ color: red; font-size: 14px; }}
@@ -114,9 +186,18 @@ def send_summary_email(all_hosts, alerts, threshold, no_data_minutes):
     <div class="summary">
         <strong>Résumé :</strong><br>
         Total de serveurs surveillés : <strong>{nb_total}</strong><br>
-        Serveurs en alerte (>{threshold}%) : <strong style="color: red;">{nb_alerts}</strong><br>
+        Serveurs en alerte espace disque (>{threshold}%) : <strong style="color: red;">{nb_disk_alerts}</strong><br>
+        Serveurs en alerte load1 (>{LOAD1_THRESHOLD}) : <strong style="color: red;">{nb_load_alerts}</strong><br>
         Serveurs sans données récentes (>{no_data_minutes}min) : <strong style="color: orange;">{nb_no_data}</strong><br>
-        Serveurs OK (≤{threshold}%) : <strong style="color: green;">{nb_ok}</strong>
+        Serveurs exclus du rapport : <strong style="color: gray;">{nb_excluded}</strong>"""
+    
+    # Ajouter la liste des hosts exclus si elle n'est pas vide
+    if excluded_hosts:
+        excluded_names = ', '.join(sorted([h['host'] for h in excluded_hosts]))
+        html_body += f"""<br>
+        <span style="color: gray; font-size: 11px;">({excluded_names})</span>"""
+    
+    html_body += """
     </div>
     
     <table>
@@ -124,12 +205,13 @@ def send_summary_email(all_hosts, alerts, threshold, no_data_minutes):
             <th>Statut</th>
             <th>Serveur</th>
             <th style="text-align: right;">Utilisation</th>
+            <th style="text-align: right;">Load (15min)</th>
             <th style="text-align: right;">Dernier contact</th>
         </tr>
 """
     
-    # Trier : du plus gros au plus petit usage
-    sorted_hosts = sorted(all_hosts, key=lambda h: h['usage'], reverse=True)
+    # Trier par nom de serveur
+    sorted_hosts = sorted(all_hosts, key=lambda h: h['host'])
     
     for host_data in sorted_hosts:
         is_alert = host_data['usage'] > threshold
@@ -142,27 +224,32 @@ def send_summary_email(all_hosts, alerts, threshold, no_data_minutes):
         last_contact_paris = host_data['last_contact'].astimezone(ZoneInfo('Europe/Paris'))
         last_contact_str = last_contact_paris.strftime('%d/%m %H:%M')
         
-        # Icône et style
-        if is_no_data:
-            status_icon = "🔴"
-            row_style = 'style="background-color: #fff3cd;"'
-            contact_style = 'style="color: orange; font-weight: bold;"'
-        elif is_alert:
-            status_icon = "🟠"
-            row_style = 'style="background-color: #ffe6e6;"'
-            contact_style = ''
+        # Récupérer le load1 pour ce host
+        load1 = host_data.get('load1', None)
+        if load1 is not None:
+            load1_str = f"{load1}"
+            is_load_alert = load1 > LOAD1_THRESHOLD
         else:
-            status_icon = "✅"
-            row_style = ""
-            contact_style = ''
+            load1_str = "-"
+            is_load_alert = False
         
-        usage_style = 'style="color: red; font-weight: bold;"' if is_alert else 'style="color: green;"'
+        # Déterminer si anomalie (alerte ou pas de données)
+        has_anomaly = is_no_data or is_alert or is_load_alert
+        
+        # Icône
+        status_icon = "🔴" if has_anomaly else "✅"
+        
+        # Styles des cellules - fond rouge uniquement pour la cellule en alerte
+        usage_style = 'style="background-color: red; color: white; font-weight: bold;"' if is_alert else 'style="color: green;"'
+        load_style = 'style="background-color: red; color: white; font-weight: bold;"' if is_load_alert else ('style="color: gray;"' if load1 is None else '')
+        contact_style = 'style="background-color: red; color: white; font-weight: bold;"' if is_no_data else ''
         
         html_body += f"""
-        <tr {row_style}>
-            <td class="{'no-data' if is_no_data else ('alert' if is_alert else 'ok')}">{status_icon}</td>
+        <tr>
+            <td class="{'alert' if has_anomaly else 'ok'}">{status_icon}</td>
             <td>{host_data['host']}</td>
             <td {usage_style}>{host_data['usage']}%</td>
+            <td {load_style}>{load1_str}</td>
             <td {contact_style}>{last_contact_str}</td>
         </tr>
 """
@@ -184,8 +271,9 @@ Rapport de surveillance disque
 
 Résumé :
 - Total de serveurs surveillés : {nb_total}
-- Serveurs en alerte (>{threshold}%) : {nb_alerts}
-- Serveurs OK (≤{threshold}%) : {nb_ok}
+- Serveurs en alerte espace disque (>{threshold}%) : {nb_disk_alerts}
+- Serveurs en alerte load1 (>{LOAD1_THRESHOLD}) : {nb_load_alerts}
+- Serveurs sans données récentes (>{no_data_minutes}min) : {nb_no_data}
 
 {'='*50}
 
@@ -222,19 +310,31 @@ def main():
         print("Erreur : Aucune donnée trouvée")
         return
     
-    # Trouver les alertes (disques > seuil)
-    alerts = [h for h in hosts_data if h['usage'] > DISK_USAGE_THRESHOLD]
+    # Récupérer les moyennes de load1
+    load_averages = get_load_averages()
+    
+    # Ajouter les données de load1 aux hosts_data
+    for host in hosts_data:
+        host['load1'] = load_averages.get(host['host'], None)
+    
+    # Séparer les hosts exclus des autres
+    excluded_hosts = [h for h in hosts_data if h['host'] in DISK_EXCLUDED_HOSTS]
+    active_hosts = [h for h in hosts_data if h['host'] not in DISK_EXCLUDED_HOSTS]
+    
+    # Trouver les alertes (disques > seuil OU load1 > seuil) parmi les hosts actifs uniquement
+    alerts = [h for h in active_hosts if h['usage'] > DISK_USAGE_THRESHOLD or (h.get('load1') is not None and h['load1'] > LOAD1_THRESHOLD)]
     
     # Calculer les anomalies
     now = datetime.now(timezone.utc)
-    hosts_no_data = [h for h in hosts_data if (now - h['last_contact']).total_seconds() > HOST_NO_DATA_MINUTES * 60]
+    hosts_no_data = [h for h in active_hosts if (now - h['last_contact']).total_seconds() > HOST_NO_DATA_MINUTES * 60]
     
-    nb_total = len(hosts_data)
-    nb_alerts = len(alerts)
+    nb_total = len(active_hosts)
+    nb_disk_alerts = len([h for h in active_hosts if h['usage'] > DISK_USAGE_THRESHOLD])
+    nb_load_alerts = len([h for h in active_hosts if h.get('load1') is not None and h['load1'] > LOAD1_THRESHOLD])
     nb_no_data = len(hosts_no_data)
     
     # Déterminer s'il y a des anomalies
-    has_anomaly = nb_alerts > 0 or nb_no_data > 0
+    has_anomaly = nb_disk_alerts > 0 or nb_load_alerts > 0 or nb_no_data > 0
     
     # Décider si on envoie l'email
     send_email = False
@@ -250,19 +350,12 @@ def main():
         # Pas d'anomalie et rapport OK déjà envoyé aujourd'hui
         reason = "Pas d'anomalie, rapport OK déjà envoyé aujourd'hui"
     
-    # Préparer le sujet
-    disk_icon = "🟠" if nb_alerts > 0 else "✅"
-    contact_icon = "🔴" if nb_no_data > 0 else "✅"
-    
-    # Date et heure pour le sujet
-    now_paris = datetime.now(ZoneInfo('Europe/Paris'))
-    date_time_str = now_paris.strftime('%d/%m %H:%M')
-    
-    subject = f"[Grafana] {date_time_str} {disk_icon} {nb_alerts}/{nb_total} alerte espace disque (>{DISK_USAGE_THRESHOLD}%) et {contact_icon} {nb_no_data}/{nb_total} alerte contact (>{HOST_NO_DATA_MINUTES}mn)"
+    # Construire le sujet
+    subject = build_subject(active_hosts, DISK_USAGE_THRESHOLD, HOST_NO_DATA_MINUTES)
     
     if send_email:
         print(f"{subject} - {reason}")
-        send_summary_email(hosts_data, alerts, DISK_USAGE_THRESHOLD, HOST_NO_DATA_MINUTES)
+        send_summary_email(active_hosts, alerts, DISK_USAGE_THRESHOLD, HOST_NO_DATA_MINUTES, excluded_hosts)
         
         # Si tout est OK, sauvegarder la date du rapport
         if not has_anomaly:

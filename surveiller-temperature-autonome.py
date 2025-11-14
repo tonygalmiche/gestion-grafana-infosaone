@@ -9,7 +9,7 @@ from zoneinfo import ZoneInfo
 from config import (
     GRAFANA_URL, API_TOKEN, TEMPERATURE_THRESHOLDS, SENSOR_NO_DATA_MINUTES,
     BATTERY_LOW_THRESHOLD, SMTP_SERVER, SMTP_PORT, SMTP_USE_TLS, SMTP_USERNAME, 
-    SMTP_PASSWORD, FROM_EMAIL, TO_EMAIL
+    SMTP_PASSWORD, FROM_EMAIL, TO_EMAIL_TEMPERATURE
 )
 from grafana_utils import (
     get_datasources, find_default_datasource, query_timescale,
@@ -17,6 +17,10 @@ from grafana_utils import (
     clear_ok_report_date, should_send_ok_report
 )
 import json
+
+
+TO_EMAIL = TO_EMAIL_TEMPERATURE
+
 
 LAST_OK_REPORT_FILE = "/tmp/surveiller-temperature-last-ok-report.txt"
 
@@ -36,7 +40,7 @@ def get_temperature_data():
         MAX(time) as time
     FROM sensor_data
     WHERE measurement = 'MI_TEMPERATURE'
-      AND time > NOW() - INTERVAL '15 minutes'
+      AND time > NOW() - INTERVAL '60 minutes'
     GROUP BY capteur
     ORDER BY capteur
     """
