@@ -41,6 +41,7 @@ def get_temperature_data():
     FROM sensor_data
     WHERE measurement = 'MI_TEMPERATURE'
       AND time > NOW() - INTERVAL '60 minutes'
+      and capteur in ('1','2','3')
     GROUP BY capteur
     ORDER BY capteur
     """
@@ -52,6 +53,7 @@ def get_temperature_data():
         value as battery
     FROM sensor_data
     WHERE measurement = 'MI_BATTERY'
+      and capteur in ('1','2','3')
     ORDER BY capteur, time DESC
     """
     
