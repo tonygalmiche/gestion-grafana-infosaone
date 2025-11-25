@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 from config import (
     GRAFANA_URL, API_TOKEN, DISK_USAGE_THRESHOLD, HOST_NO_DATA_MINUTES,
-    DISK_EXCLUDED_HOSTS, LOAD1_THRESHOLD, SMTP_SERVER, SMTP_PORT, SMTP_USE_TLS, SMTP_USERNAME, SMTP_PASSWORD,
+    DISK_EXCLUDED_HOSTS, LOAD1_THRESHOLD, LOAD1_THRESHOLD_PER_HOST, SMTP_SERVER, SMTP_PORT, SMTP_USE_TLS, SMTP_USERNAME, SMTP_PASSWORD,
     FROM_EMAIL, TO_EMAIL
 )
 from grafana_utils import (
@@ -19,6 +19,10 @@ from grafana_utils import (
 import json
 
 LAST_OK_REPORT_FILE = "/tmp/surveiller-disk-last-ok-report.txt"
+
+def get_host_load_threshold(hostname):
+    """Retourne le seuil load1 pour un host donné"""
+    return LOAD1_THRESHOLD_PER_HOST.get(hostname, LOAD1_THRESHOLD)
 
 def get_disk_usage():
     """Récupère l'utilisation disque de tous les hosts"""
@@ -35,6 +39,7 @@ def get_disk_usage():
         used_percent, 
         time
     FROM disk
+    WHERE path='/'
     ORDER BY host, time DESC
     """
     
@@ -121,7 +126,7 @@ def build_subject(all_hosts, threshold, no_data_minutes):
     
     # Calculer le nombre de hosts avec alerte disque et load1
     nb_disk_alerts = len([h for h in all_hosts if h['usage'] > threshold])
-    nb_load_alerts = len([h for h in all_hosts if h.get('load1') is not None and h['load1'] > LOAD1_THRESHOLD])
+    nb_load_alerts = len([h for h in all_hosts if h.get('load1') is not None and h['load1'] > get_host_load_threshold(h['host'])])
     
     # Date et heure pour le sujet
     now_paris = datetime.now(ZoneInfo('Europe/Paris'))
@@ -133,7 +138,7 @@ def build_subject(all_hosts, threshold, no_data_minutes):
     if nb_disk_alerts > 0:
         subject_parts.append(f"🟠 {nb_disk_alerts}/{nb_total} disque (>{threshold}%)")
     if nb_load_alerts > 0:
-        subject_parts.append(f"🟠 {nb_load_alerts}/{nb_total} load1 (>{LOAD1_THRESHOLD})")
+        subject_parts.append(f"🟠 {nb_load_alerts}/{nb_total} load1")
     if nb_no_data > 0:
         subject_parts.append(f"🔴 {nb_no_data}/{nb_total} contact (>{no_data_minutes}mn)")
     
@@ -157,7 +162,7 @@ def send_summary_email(all_hosts, alerts, threshold, no_data_minutes, excluded_h
     
     # Calculer le nombre de hosts avec alerte disque et load1
     nb_disk_alerts = len([h for h in all_hosts if h['usage'] > threshold])
-    nb_load_alerts = len([h for h in all_hosts if h.get('load1') is not None and h['load1'] > LOAD1_THRESHOLD])
+    nb_load_alerts = len([h for h in all_hosts if h.get('load1') is not None and h['load1'] > get_host_load_threshold(h['host'])])
     
     # Construire le sujet
     subject = build_subject(all_hosts, threshold, no_data_minutes)
@@ -227,8 +232,12 @@ def send_summary_email(all_hosts, alerts, threshold, no_data_minutes, excluded_h
         # Récupérer le load1 pour ce host
         load1 = host_data.get('load1', None)
         if load1 is not None:
-            load1_str = f"{load1}"
-            is_load_alert = load1 > LOAD1_THRESHOLD
+            host_threshold = get_host_load_threshold(host_data['host'])
+            is_load_alert = load1 > host_threshold
+            if is_load_alert:
+                load1_str = f"{load1}>{host_threshold}"
+            else:
+                load1_str = f"{load1}"
         else:
             load1_str = "-"
             is_load_alert = False
@@ -322,7 +331,7 @@ def main():
     active_hosts = [h for h in hosts_data if h['host'] not in DISK_EXCLUDED_HOSTS]
     
     # Trouver les alertes (disques > seuil OU load1 > seuil) parmi les hosts actifs uniquement
-    alerts = [h for h in active_hosts if h['usage'] > DISK_USAGE_THRESHOLD or (h.get('load1') is not None and h['load1'] > LOAD1_THRESHOLD)]
+    alerts = [h for h in active_hosts if h['usage'] > DISK_USAGE_THRESHOLD or (h.get('load1') is not None and h['load1'] > get_host_load_threshold(h['host']))]
     
     # Calculer les anomalies
     now = datetime.now(timezone.utc)
@@ -330,7 +339,7 @@ def main():
     
     nb_total = len(active_hosts)
     nb_disk_alerts = len([h for h in active_hosts if h['usage'] > DISK_USAGE_THRESHOLD])
-    nb_load_alerts = len([h for h in active_hosts if h.get('load1') is not None and h['load1'] > LOAD1_THRESHOLD])
+    nb_load_alerts = len([h for h in active_hosts if h.get('load1') is not None and h['load1'] > get_host_load_threshold(h['host'])])
     nb_no_data = len(hosts_no_data)
     
     # Déterminer s'il y a des anomalies
