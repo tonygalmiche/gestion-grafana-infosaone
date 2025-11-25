@@ -32,46 +32,85 @@ def get_disk_usage():
     if not default_ds:
         return []
     
-    # Requête pour obtenir la dernière valeur de chaque host
-    sql = """
+    # Requête pour obtenir le used_percent maximum par host
+    sql_usage = """
     SELECT DISTINCT ON (host) 
         host, 
-        used_percent, 
-        time
+        path,
+        used_percent
     FROM disk
-    WHERE path='/'
-    ORDER BY host, time DESC
+    WHERE   path not like '/snap%'
+        and path not like '/sys%'
+        and path not like '/mnt/PK-%'
+        and path not like '/boot%'
+        and path not like '/run%'
+    ORDER BY host, used_percent DESC
     """
     
-    results = query_timescale(GRAFANA_URL, API_TOKEN, default_ds.get('uid'), sql)
+    # Requête pour obtenir le dernier contact par host
+    sql_time = """
+    SELECT DISTINCT ON (host) 
+        host,
+        time
+    FROM disk
+    WHERE   path not like '/snap%'
+        and path not like '/sys%'
+        and path not like '/mnt/PK-%'
+        and path not like '/boot%'
+        and path not like '/run%'
+    ORDER BY host, time DESC
+    """
+
+    # Récupérer les données d'utilisation
+    results_usage = query_timescale(GRAFANA_URL, API_TOKEN, default_ds.get('uid'), sql_usage)
     
-    if not results or 'results' not in results:
+    if not results_usage or 'results' not in results_usage:
         return []
     
-    hosts_data = []
-    for result in results.get('results', {}).values():
+    # Récupérer les données de temps
+    results_time = query_timescale(GRAFANA_URL, API_TOKEN, default_ds.get('uid'), sql_time)
+    
+    if not results_time or 'results' not in results_time:
+        return []
+    
+    # Extraire les timestamps par host
+    time_dict = {}
+    for result in results_time.get('results', {}).values():
         if 'frames' in result:
             for frame in result['frames']:
-                schema = frame.get('schema', {}).get('fields', [])
+                data_values = frame.get('data', {}).get('values', [])
+                
+                if len(data_values) >= 2:
+                    hosts = data_values[0]
+                    timestamps = data_values[1]
+                    
+                    for i in range(len(hosts)):
+                        ts = timestamps[i] / 1000  # millisecondes vers secondes
+                        time_dict[hosts[i]] = datetime.fromtimestamp(ts, tz=timezone.utc)
+    
+    # Extraire les données d'utilisation et combiner avec les timestamps
+    hosts_dict = {}
+    for result in results_usage.get('results', {}).values():
+        if 'frames' in result:
+            for frame in result['frames']:
                 data_values = frame.get('data', {}).get('values', [])
                 
                 if len(data_values) >= 3:
                     hosts = data_values[0]
-                    percentages = data_values[1]
-                    timestamps = data_values[2]
+                    paths = data_values[1]
+                    percentages = data_values[2]
                     
                     for i in range(len(hosts)):
-                        # Convertir le timestamp en datetime
-                        ts = timestamps[i] / 1000  # millisecondes vers secondes
-                        last_contact = datetime.fromtimestamp(ts, tz=timezone.utc)
+                        hostname = hosts[i]
+                        usage = int(round(percentages[i]))
                         
-                        hosts_data.append({
-                            'host': hosts[i],
-                            'usage': int(round(percentages[i])),
-                            'last_contact': last_contact
-                        })
-    
-    return hosts_data
+                        hosts_dict[hostname] = {
+                            'host': hostname,
+                            'usage': usage,
+                            'last_contact': time_dict.get(hostname, datetime.now(timezone.utc))
+                        }
+
+    return list(hosts_dict.values())
 
 def get_load_averages():
     """Récupère la moyenne du load1 sur les 15 dernières minutes pour chaque host"""
