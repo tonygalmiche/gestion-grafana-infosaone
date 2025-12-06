@@ -118,6 +118,41 @@ def get_temperature_data():
     
     return sensors_data
 
+def build_subject(all_sensors, no_data_minutes):
+    """Construit le sujet de l'email basé sur les alertes actives"""
+    nb_total = len(all_sensors)
+    
+    # Calculer le nombre de capteurs sans données récentes
+    now = datetime.now(timezone.utc)
+    sensors_no_data = [s for s in all_sensors if (now - s['last_contact']).total_seconds() > no_data_minutes * 60]
+    nb_no_data = len(sensors_no_data)
+    
+    # Calculer le nombre d'alertes température
+    nb_temp_alerts = len([s for s in all_sensors if s['temperature'] < s['min_threshold'] or s['temperature'] > s['max_threshold']])
+    
+    # Calculer le nombre d'alertes batterie faible
+    nb_battery_alerts = len([s for s in all_sensors if s['battery'] is not None and s['battery'] <= BATTERY_LOW_THRESHOLD])
+    
+    # Date et heure pour le sujet
+    now_paris = datetime.now(ZoneInfo('Europe/Paris'))
+    date_time_str = now_paris.strftime('%d/%m %H:%M')
+    
+    # Construire le sujet avec uniquement les alertes actives
+    subject_parts = [f"[Grafana] {date_time_str}"]
+    
+    if nb_temp_alerts > 0:
+        subject_parts.append(f"🟠 {nb_temp_alerts}/{nb_total} température")
+    if nb_battery_alerts > 0:
+        subject_parts.append(f"🟠 {nb_battery_alerts}/{nb_total} batterie (<={BATTERY_LOW_THRESHOLD}%)")
+    if nb_no_data > 0:
+        subject_parts.append(f"🔴 {nb_no_data}/{nb_total} contact (>{no_data_minutes}mn)")
+    
+    # Si aucune alerte, indiquer juste le nombre de capteurs surveillés
+    if nb_temp_alerts == 0 and nb_battery_alerts == 0 and nb_no_data == 0:
+        subject_parts.append(f"✅ {nb_total} capteurs OK")
+    
+    return " ".join(subject_parts)
+
 def send_summary_email(all_sensors, alerts, no_data_minutes):
     """Envoie un email récapitulatif avec toutes les alertes température"""
     
@@ -135,16 +170,8 @@ def send_summary_email(all_sensors, alerts, no_data_minutes):
     
     nb_ok = nb_total - nb_alerts - nb_battery_alerts
     
-    # Icônes pour le sujet
-    temp_icon = "🟠" if nb_alerts > 0 else "✅"
-    contact_icon = "🔴" if nb_no_data > 0 else "✅"
-    battery_icon = "🟠" if nb_battery_alerts > 0 else "✅"
-    
-    # Date et heure pour le sujet
-    now_paris = datetime.now(ZoneInfo('Europe/Paris'))
-    date_time_str = now_paris.strftime('%d/%m %H:%M')
-    
-    subject = f"[Grafana] {date_time_str} {temp_icon} {nb_alerts}/{nb_total} alerte température, {battery_icon} {nb_battery_alerts}/{nb_total} batterie faible (<={BATTERY_LOW_THRESHOLD}%) et {contact_icon} {nb_no_data}/{nb_total} alerte contact (>{no_data_minutes}mn)"
+    # Construire le sujet
+    subject = build_subject(all_sensors, no_data_minutes)
     
     # Construction du tableau HTML
     html_body = f"""
@@ -337,15 +364,7 @@ def main():
         reason = "Pas d'anomalie, rapport OK déjà envoyé aujourd'hui"
     
     # Préparer le sujet
-    temp_icon = "🟠" if nb_alerts > 0 else "✅"
-    contact_icon = "🔴" if nb_no_data > 0 else "✅"
-    battery_icon = "🟠" if nb_battery_alerts > 0 else "✅"
-    
-    # Date et heure pour le sujet
-    now_paris = datetime.now(ZoneInfo('Europe/Paris'))
-    date_time_str = now_paris.strftime('%d/%m %H:%M')
-    
-    subject = f"[Grafana] {date_time_str} {temp_icon} {nb_alerts}/{nb_total} alerte température, {battery_icon} {nb_battery_alerts}/{nb_total} batterie faible (<={BATTERY_LOW_THRESHOLD}%) et {contact_icon} {nb_no_data}/{nb_total} alerte contact (>{SENSOR_NO_DATA_MINUTES}mn)"
+    subject = build_subject(sensors_data, SENSOR_NO_DATA_MINUTES)
     
     if send_email:
         print(f"{subject} - {reason}")
