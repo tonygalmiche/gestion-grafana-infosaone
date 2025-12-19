@@ -1,0 +1,48 @@
+# Robots.txt restrictif pour limiter le crawling abusif
+
+# Bots essentiels pour le SEO (Google et Bing uniquement)
+User-agent: Googlebot
+Crawl-delay: 10
+Disallow: /web/
+Disallow: /*/web/
+
+User-agent: Bingbot
+Crawl-delay: 10
+Disallow: /web/
+Disallow: /*/web/
+
+# Facebook/Meta - TRÈS restrictif
+User-agent: facebookexternalagent
+User-agent: meta-externalagent
+Crawl-delay: 300
+Disallow: /
+
+# Autres bots sociaux - TRÈS restrictif
+User-agent: Twitterbot
+User-agent: LinkedInBot
+Crawl-delay: 300
+Disallow: /
+
+# Bots marketing/SEO - BLOQUER
+User-agent: AhrefsBot
+User-agent: SemrushBot
+User-agent: MJ12bot
+User-agent: DotBot
+User-agent: PetalBot
+User-agent: YandexBot
+User-agent: Bytespider
+User-agent: DataForSeoBot
+User-agent: GPTBot
+User-agent: CCBot
+User-agent: anthropic-ai
+User-agent: Claude-Web
+Disallow: /
+
+# Par défaut - restrictif
+User-agent: *
+Crawl-delay: 30
+Disallow: /web/
+Disallow: /*/web/
+Disallow: /admin/
+Disallow: /login/
+Disallow: /auth/
