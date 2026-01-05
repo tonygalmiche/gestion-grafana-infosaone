@@ -48,6 +48,8 @@ def get_disk_usage():
         and path not like '/mnt/PK-%'
         and path not like '/boot%'
         and path not like '/run%'
+        and used_percent is not null
+        and time >= (CURRENT_TIMESTAMP AT TIME ZONE 'UTC' - INTERVAL '10 minutes')
     ORDER BY host, used_percent DESC
     """
     
