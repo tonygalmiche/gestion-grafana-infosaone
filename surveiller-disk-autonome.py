@@ -131,7 +131,7 @@ def get_load_averages():
       round(avg(load1)::numeric, 1) AS load1
     FROM system
     WHERE
-      time >= (CURRENT_TIMESTAMP AT TIME ZONE 'UTC' - INTERVAL '30 minutes)'
+      time >= (CURRENT_TIMESTAMP AT TIME ZONE 'UTC' - INTERVAL '30 minutes')
       AND load1 IS NOT NULL
     GROUP BY host
     ORDER BY host
