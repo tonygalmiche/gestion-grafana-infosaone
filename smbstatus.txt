@@ -1,0 +1,288 @@
+
+Samba version 4.17.12-Debian
+PID     Username     Group        Machine                                   Protocol Version  Encryption           Signing              
+----------------------------------------------------------------------------------------------------------------------------------------
+92929   al           Utilisateurs du domaine 10.1.40.162 (ipv4:10.1.40.162:58050)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+91881   gh           Utilisateurs du domaine 10.1.40.147 (ipv4:10.1.40.147:58041)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+93134   tm           Utilisateurs du domaine 10.1.30.145 (ipv4:10.1.30.145:50294)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+93409   tc           Utilisateurs du domaine 10.1.30.123 (ipv4:10.1.30.123:58486)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+91803   cp2          Utilisateurs du domaine 10.1.40.111 (ipv4:10.1.40.111:51194)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+92847   sd2          Utilisateurs du domaine 10.1.20.53 (ipv4:10.1.20.53:61341)        SMB3_11           AES-128-GCM          AES-128-GMAC         
+93901   gs2          Utilisateurs du domaine 10.1.30.138 (ipv4:10.1.30.138:54017)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+92367   eb           Utilisateurs du domaine 10.1.10.105 (ipv4:10.1.10.105:41548)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+92002   techmoules   Utilisateurs du domaine 10.1.30.188 (ipv4:10.1.30.188:56626)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+91802   fc2          Utilisateurs du domaine 10.1.40.114 (ipv4:10.1.40.114:53120)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+91954   ns           Utilisateurs du domaine 10.10.0.25 (ipv4:10.10.0.25:57368)        SMB3_11           AES-128-GCM          AES-128-GMAC         
+93330   jm           Utilisateurs du domaine 10.1.30.156 (ipv4:10.1.30.156:58560)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+91822   cf           Utilisateurs du domaine 10.1.20.54 (ipv4:10.1.20.54:63540)        SMB3_11           AES-128-GCM          AES-128-GMAC         
+92938   tm           Utilisateurs du domaine 10.1.30.175 (ipv4:10.1.30.175:52459)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+92366   eb           Utilisateurs du domaine 10.1.10.105 (ipv4:10.1.10.105:46236)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+91819   jb           Utilisateurs du domaine 10.10.0.6 (ipv4:10.10.0.6:52466)          SMB3_11           AES-128-GCM          AES-128-GMAC         
+91793   og           Utilisateurs du domaine 10.1.20.158 (ipv4:10.1.20.158:60575)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+92136   mj           Utilisateurs du domaine 10.1.40.183 (ipv4:10.1.40.183:51241)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+92076   ts           Utilisateurs du domaine 10.10.0.32 (ipv4:10.10.0.32:54903)        SMB3_11           AES-128-GCM          AES-128-GMAC         
+92121   eg           Utilisateurs du domaine 10.10.0.7 (ipv4:10.10.0.7:64835)          SMB3_11           AES-128-GCM          AES-128-GMAC         
+91797   sd3          Utilisateurs du domaine 10.10.0.2 (ipv4:10.10.0.2:49199)          SMB3_11           AES-128-GCM          AES-128-GMAC         
+92541   optique      Utilisateurs du domaine 10.1.40.177 (ipv4:10.1.40.177:62540)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+92361   av           Utilisateurs du domaine 10.1.30.160 (ipv4:10.1.30.160:52308)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+91795   cb           Utilisateurs du domaine 10.10.0.224 (ipv4:10.10.0.224:54893)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+91796   ap           Utilisateurs du domaine 10.1.20.162 (ipv4:10.1.20.162:49827)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+92408   ob           Utilisateurs du domaine 10.1.40.151 (ipv4:10.1.40.151:54362)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+93454   matiere      Utilisateurs du domaine 10.1.30.152 (ipv4:10.1.30.152:50478)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+92218   ab           Utilisateurs du domaine 10.1.30.178 (ipv4:10.1.30.178:52458)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+91792   fp           Utilisateurs du domaine 10.1.40.176 (ipv4:10.1.40.176:50168)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+91860   sm           Utilisateurs du domaine 10.1.40.186 (ipv4:10.1.40.186:60313)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+93171   be-sw        Utilisateurs du domaine 10.1.40.86 (ipv4:10.1.40.86:54477)        SMB3_11           AES-128-GCM          AES-128-GMAC         
+91794   sg           Utilisateurs du domaine 10.1.30.151 (ipv4:10.1.30.151:60337)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+91790   rheologie    Utilisateurs du domaine 10.1.40.85 (ipv4:10.1.40.85:58048)        SMB3_11           AES-128-GCM          AES-128-GMAC         
+91949   km           Utilisateurs du domaine 10.1.30.121 (ipv4:10.1.30.121:57140)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+91991   fj2          Utilisateurs du domaine 10.1.20.194 (ipv4:10.1.20.194:49671)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+91798   gf           Utilisateurs du domaine 10.1.20.164 (ipv4:10.1.20.164:54210)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+91862   jfb          Utilisateurs du domaine 10.1.40.123 (ipv4:10.1.40.123:57546)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+92273   metro        Utilisateurs du domaine 10.1.40.168 (ipv4:10.1.40.168:54902)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+92223   rv           Utilisateurs du domaine 10.1.30.126 (ipv4:10.1.30.126:58815)      SMB3_11           AES-128-GCM          AES-128-GMAC         
+
+Service      pid     Machine       Connected at                     Encryption   Signing     
+---------------------------------------------------------------------------------------------
+utilisateurs 92408   10.1.40.151   mar. janv.  6 10:11:29 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 92218   10.1.30.178   mar. janv.  6 10:08:04 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 91862   10.1.40.123   mar. janv.  6 10:00:57 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs2 92367   10.1.10.105   mar. janv.  6 10:10:36 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 91798   10.1.20.164   mar. janv.  6 10:00:03 2026 CET  AES-128-GCM  AES-128-GMAC
+freedom-archive 91802   10.1.40.114   mar. janv.  6 10:07:28 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs2 91819   10.10.0.6     mar. janv.  6 10:00:21 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 91792   10.1.40.176   mar. janv.  6 10:00:03 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 92121   10.10.0.7     mar. janv.  6 10:24:49 2026 CET  AES-128-GCM  AES-128-GMAC
+freedom-archive 92408   10.1.40.151   mar. janv.  6 10:11:41 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 92938   10.1.30.175   mar. janv.  6 10:23:39 2026 CET  AES-128-GCM  AES-128-GMAC
+freedom-archive 91797   10.10.0.2     mar. janv.  6 10:03:27 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 91860   10.1.40.186   mar. janv.  6 10:36:55 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 91949   10.1.30.121   mar. janv.  6 10:03:08 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs2 91860   10.1.40.186   mar. janv.  6 10:36:55 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 91795   10.10.0.224   mar. janv.  6 10:00:03 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs2 91795   10.10.0.224   mar. janv.  6 10:46:05 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs2 92076   10.10.0.32    mar. janv.  6 10:05:18 2026 CET  AES-128-GCM  AES-128-GMAC
+freedom-archive 91954   10.10.0.25    mar. janv.  6 10:27:21 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs2 91954   10.10.0.25    mar. janv.  6 10:27:21 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 93330   10.1.30.156   mar. janv.  6 10:33:17 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 92076   10.10.0.32    mar. janv.  6 10:05:18 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs2 92847   10.1.20.53    mar. janv.  6 10:21:14 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs2 92121   10.10.0.7     mar. janv.  6 10:06:14 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs2 92223   10.1.30.126   mar. janv.  6 10:17:33 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs2 91991   10.1.20.194   mar. janv.  6 10:03:57 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 92929   10.1.40.162   mar. janv.  6 10:23:11 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs2 91802   10.1.40.114   mar. janv.  6 10:07:28 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 91790   10.1.40.85    mar. janv.  6 10:00:03 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 91881   10.1.40.147   mar. janv.  6 10:01:26 2026 CET  AES-128-GCM  AES-128-GMAC
+freedom-archive 92076   10.10.0.32    mar. janv.  6 10:05:18 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 91802   10.1.40.114   mar. janv.  6 10:00:07 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 92361   10.1.30.160   mar. janv.  6 10:10:33 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 93901   10.1.30.138   mar. janv.  6 10:47:05 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 93454   10.1.30.152   mar. janv.  6 10:36:15 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs2 91822   10.1.20.54    mar. janv.  6 10:00:25 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 91991   10.1.20.194   mar. janv.  6 10:07:03 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 93409   10.1.30.123   mar. janv.  6 10:35:08 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs2 91793   10.1.20.158   mar. janv.  6 10:00:03 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 91793   10.1.20.158   mar. janv.  6 10:00:20 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 93134   10.1.30.145   mar. janv.  6 10:27:58 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 91822   10.1.20.54    mar. janv.  6 10:00:25 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 92541   10.1.40.177   mar. janv.  6 10:14:47 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 91954   10.10.0.25    mar. janv.  6 10:03:18 2026 CET  AES-128-GCM  AES-128-GMAC
+freedom-archive 91881   10.1.40.147   mar. janv.  6 10:01:36 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 91803   10.1.40.111   mar. janv.  6 10:00:09 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 92136   10.1.40.183   mar. janv.  6 10:06:34 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs2 92366   10.1.10.105   mar. janv.  6 10:10:36 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 92273   10.1.40.168   mar. janv.  6 10:09:01 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 91797   10.10.0.2     mar. janv.  6 10:00:03 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 93171   10.1.40.86    mar. janv.  6 10:29:14 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 92223   10.1.30.126   mar. janv.  6 10:08:14 2026 CET  AES-128-GCM  AES-128-GMAC
+freedom-archive 91860   10.1.40.186   mar. janv.  6 10:36:55 2026 CET  AES-128-GCM  AES-128-GMAC
+freedom-archive 92929   10.1.40.162   mar. janv.  6 10:26:10 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 92002   10.1.30.188   mar. janv.  6 10:04:09 2026 CET  AES-128-GCM  AES-128-GMAC
+freedom-archive 91803   10.1.40.111   mar. janv.  6 10:02:49 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 92847   10.1.20.53    mar. janv.  6 10:21:14 2026 CET  AES-128-GCM  AES-128-GMAC
+freedom-archive 91862   10.1.40.123   mar. janv.  6 10:01:37 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs 91794   10.1.30.151   mar. janv.  6 10:00:03 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs2 91796   10.1.20.162   mar. janv.  6 10:41:03 2026 CET  AES-128-GCM  AES-128-GMAC
+utilisateurs2 91881   10.1.40.147   mar. janv.  6 10:01:36 2026 CET  AES-128-GCM  AES-128-GMAC
+
+
+Locked files:
+Pid          User(ID)   DenyMode   Access      R/W        Oplock           SharePath   Name   Time
+--------------------------------------------------------------------------------------------------
+93134        10209      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Service Maintenance/MAINTENANCE EQUIPEMENT/05 - EQUIPEMENTS/02 - PERIPHERIQUES/DS et ET/01 - DS et ET preventif/01 - DS et ET gamme maintenance preventive indice D.xlsx   Tue Jan  6 10:31:40 2026
+92223        10118      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Direction site de Gray/Activités/SSE - Environnement   Tue Jan  6 10:18:23 2026
+92223        10118      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Direction site de Gray/Activités/SSE - Environnement   Tue Jan  6 10:18:23 2026
+92847        10345      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs2   Service Financier/Direction Financière/PLASTIGRAY SAS/SIG & BILAN/2025/Budget/2025 BUDGET FRAIS GENERAUX FINANCE.xlsx   Tue Jan  6 10:25:27 2026
+91802        10272      DENY_NONE  0x1000a0    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service CAO/projets/PLASTIC OMNIUM/FlexEVan/3125 - Support capteur EXT UPA AR D&G/04 - Moule/Plan moule/250820-etude à jour   Tue Jan  6 10:05:09 2026
+91991        10306      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Commercial/00-Clients   Tue Jan  6 10:21:02 2026
+91991        10306      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Commercial/00-Clients   Tue Jan  6 10:21:02 2026
+92223        10118      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Direction site de Gray   Tue Jan  6 10:18:23 2026
+92223        10118      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Direction site de Gray   Tue Jan  6 10:18:23 2026
+91802        10272      DENY_WRITE 0x13019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Service CAO/projets/PLASTIC OMNIUM/FlexEVan/3125 - Support capteur EXT UPA AR D&G/04 - Moule/note moule - essai - MAP/T2/~$2025 06 27 t2 the checking list of 3125.xlsx   Tue Jan  6 10:06:08 2026
+91793        10376      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Ressources Humaines/THEMES RH/FORMATION/FORMATIONS/FORMATIONS 2026   Tue Jan  6 10:17:41 2026
+91793        10376      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Ressources Humaines/THEMES RH/FORMATION/FORMATIONS/FORMATIONS 2026   Tue Jan  6 10:17:41 2026
+92218        10003      DENY_NONE  0x1000a0    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   DOSSIER TEMPORAIRE COMMUN   Tue Jan  6 10:38:08 2026
+91803        10385      DENY_WRITE 0x13019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Service CAO/projets/DELTADORE/D2739 - Radio Stand - Covers - Touches/3139 - Covers et Touches/08 - Matiere/DM 1524 - chgt colorant noir/~$3139-DM_1524_3139_25 - proto et mesure échantillons Makrolon.xlsx   Tue Jan  6 10:19:58 2026
+92929        10228      DENY_NONE  0x80        RDONLY     NONE             /mnt/vdb1/samba/freedom-archive   .   Tue Jan  6 10:26:10 2026
+92408        10081      DENY_NONE  0x80        RDONLY     NONE             /mnt/vdb1/samba/freedom-archive   .   Tue Jan  6 10:11:41 2026
+92076        10383      DENY_ALL   0x100080    RDONLY     NONE             /mnt/vdb1/samba/freedom-archive   .   Tue Jan  6 10:05:18 2026
+91954        10386      DENY_NONE  0x80        RDONLY     NONE             /mnt/vdb1/samba/freedom-archive   .   Tue Jan  6 10:27:48 2026
+91881        10324      DENY_NONE  0x80        RDONLY     NONE             /mnt/vdb1/samba/freedom-archive   .   Tue Jan  6 10:01:36 2026
+91862        10360      DENY_NONE  0x80        RDONLY     NONE             /mnt/vdb1/samba/freedom-archive   .   Tue Jan  6 10:01:37 2026
+91860        10284      DENY_ALL   0x100080    RDONLY     NONE             /mnt/vdb1/samba/freedom-archive   .   Tue Jan  6 10:36:54 2026
+91803        10385      DENY_NONE  0x80        RDONLY     NONE             /mnt/vdb1/samba/freedom-archive   .   Tue Jan  6 10:02:49 2026
+91802        10272      DENY_NONE  0x80        RDONLY     NONE             /mnt/vdb1/samba/freedom-archive   .   Tue Jan  6 10:07:28 2026
+91797        10368      DENY_NONE  0x80        RDONLY     NONE             /mnt/vdb1/samba/freedom-archive   .   Tue Jan  6 10:04:07 2026
+91793        10376      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Ressources Humaines/THEMES RH/FORMATION   Tue Jan  6 10:17:39 2026
+91793        10376      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Ressources Humaines/THEMES RH/FORMATION   Tue Jan  6 10:17:39 2026
+92223        10118      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Direction site de Gray/Ressources humaines   Tue Jan  6 10:18:23 2026
+92223        10118      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Direction site de Gray/Ressources humaines   Tue Jan  6 10:18:23 2026
+93134        10209      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Service Maintenance/MAINTENANCE EQUIPEMENT/05 - EQUIPEMENTS/02 - PERIPHERIQUES/DS et ET/01 - DS et ET preventif/~$01 - DS et ET gamme maintenance preventive indice D.xlsx   Tue Jan  6 10:31:40 2026
+91819        10337      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Commercial/00-Clients/OP MOBILITY/Prix/3205-12-MAI 11+12 POE   Tue Jan  6 10:05:09 2026
+91819        10337      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Commercial/00-Clients/OP MOBILITY/Prix/3205-12-MAI 11+12 POE   Tue Jan  6 10:05:09 2026
+91802        10272      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service CAO/projets/PLASTIC OMNIUM/FlexEVan/3125 - Support capteur EXT UPA AR D&G/04 - Moule/note moule - essai - MAP/T2/3125_t2_20250627   Tue Jan  6 10:07:24 2026
+91802        10272      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service CAO/projets/PLASTIC OMNIUM/FlexEVan/3125 - Support capteur EXT UPA AR D&G/04 - Moule/note moule - essai - MAP/T2/3125_t2_20250627   Tue Jan  6 10:07:24 2026
+92136        10073      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Service CAO/projets/HONDA - FMC/3148 - Frame Bottom/10-Qualite-developpement/Metrologie/Rapport_de_controle/T4-3148-005/programme_3d/3148-INT-005-1.xlsx   Tue Jan  6 10:17:37 2026
+91796        10166      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Commercial/A.PETITJEAN/A Prix/3000 3013   Tue Jan  6 10:47:39 2026
+91796        10166      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Commercial/A.PETITJEAN/A Prix/3000 3013   Tue Jan  6 10:47:39 2026
+91954        10386      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Service Méthodes Production/N.SANVICENTE/Essais en cours/2026/SOMFY/3104 - SIMU IGEAXOVIA BFT Version/CR essais/3104-007 CR essais internes - FO-0-BEI-21-2.xlsx   Tue Jan  6 10:03:21 2026
+91794        10093      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Qualité/Répertoire collaborateurs/Stephane Garny   Tue Jan  6 10:35:45 2026
+91794        10093      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Qualité/Répertoire collaborateurs/Stephane Garny   Tue Jan  6 10:35:45 2026
+92223        10118      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Direction site de Gray/A trier   Tue Jan  6 10:18:23 2026
+92223        10118      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Direction site de Gray/A trier   Tue Jan  6 10:18:23 2026
+92847        10345      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs2   Service Financier/Direction Financière/PLASTIGRAY SAS/SIG & BILAN/2026/Budget/2026 BUDGET FRAIS GENERAUX FINANCE.xlsx   Tue Jan  6 10:25:10 2026
+91991        10306      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Commercial/00-Clients/VALEO/PRIX/2880-2881 CD-COMRA SUV   Tue Jan  6 10:21:19 2026
+91991        10306      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Commercial/00-Clients/VALEO/PRIX/2880-2881 CD-COMRA SUV   Tue Jan  6 10:21:19 2026
+91881        10324      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service CAO/projets/PLASTIC OMNIUM/STELLANTIS - MAI_1-1_1-2/Gestion_generale/10 - Suivi projet   Tue Jan  6 10:01:31 2026
+91881        10324      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service CAO/projets/PLASTIC OMNIUM/STELLANTIS - MAI_1-1_1-2/Gestion_generale/10 - Suivi projet   Tue Jan  6 10:01:31 2026
+91991        10306      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Commercial/00-Clients/VALEO   Tue Jan  6 10:21:04 2026
+91991        10306      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Commercial/00-Clients/VALEO   Tue Jan  6 10:21:04 2026
+91862        10360      DENY_WRITE 0x120089    RDONLY     LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Partage-PLASTI-KA/projets/DAIMAY - BMW CF1 - 3061 - 3062 - 3063 - F0386 - F0387/3061 - Armatures NSOR LIT G-D/04 - Moule/Modification interne/260106-pavé cassé/Devis_25_12027-A.pdf   Tue Jan  6 10:13:55 2026
+91798        10119      DENY_NONE  0x120089    RDONLY     LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Service ADV/ARCHIVAGE ELECTRONIQUE COMMANDES CLIENT/HYDRO  - 908727-1/2025/471181957.pdf   Tue Jan  6 10:03:30 2026
+91802        10272      DENY_NONE  0x120089    RDONLY     LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Service CAO/CDC MOULE/SUIVI MOULE/250722 suivi moules-chiffrage CHINE.xlsx   Tue Jan  6 10:29:14 2026
+91991        10306      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs2   Service Commercial/00-Clients/VALEO/PRIX/2880-2881 CD-COMRA SUV/TARIFS AU 06 02 2025 vérifiés/Moule 2880 E1182479 ou E1182478 ind E-2.xlsx   Tue Jan  6 10:21:39 2026
+92218        10003      DENY_WRITE 0x13019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   DOSSIER TEMPORAIRE COMMUN/~$Online Releases To Suppliers-2026-01-06T103608 - A3B8 - 06012026.xlsx   Tue Jan  6 10:37:11 2026
+92847        10345      DENY_WRITE 0x13019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs2   Service Financier/Direction Financière/PLASTIGRAY SAS/SIG & BILAN/2025/Budget/~$2025 BUDGET FRAIS GENERAUX FINANCE.xlsx   Tue Jan  6 10:25:27 2026
+91819        10337      DENY_WRITE 0x13019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs2   Service Commercial/00-Clients/OP MOBILITY/Prix/3205-12-MAI 11+12 POE/~$115.25-MAI 1_2-251008.xlsx   Tue Jan  6 10:06:54 2026
+91881        10324      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Service CAO/projets/PLASTIC OMNIUM/STELLANTIS - MAI_1-1_1-2/Gestion_generale/10 - Suivi projet/251210-Ref SAP pour déclarations IMDS - MAI.xls   Tue Jan  6 10:01:38 2026
+91991        10306      DENY_WRITE 0x13019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs2   Service Commercial/00-Clients/VALEO/PRIX/2880-2881 CD-COMRA SUV/TARIFS AU 06 02 2025 vérifiés/~$Moule 2880 E1182479 ou E1182478 ind E-2.xlsx   Tue Jan  6 10:21:39 2026
+92136        10073      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Service CAO/projets/HONDA - FMC/3148 - Frame Bottom/10-Qualite-developpement/Metrologie/Rapport_de_controle/T4-3148-005/260105_RC PLASTIGRAY-3148-T4_PeQR 50101V0KA E300 (V0KA F-1+).xlsm   Tue Jan  6 10:06:36 2026
+92136        10073      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   DOSSIER TEMPORAIRE COMMUN/mj   Tue Jan  6 10:11:10 2026
+92136        10073      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   DOSSIER TEMPORAIRE COMMUN/mj   Tue Jan  6 10:11:10 2026
+93134        10209      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Service Maintenance/MAINTENANCE EQUIPEMENT/05 - EQUIPEMENTS/04 - ARCHIVE GAMME DE MAINTENANCE et TABLEAU DE SUIVI/01 - GAMME DE MAINTENANCE A SIGNER/DS0044 Point de rosée.xlsx   Tue Jan  6 10:41:11 2026
+92218        10003      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   DOSSIER TEMPORAIRE COMMUN/Online Releases To Suppliers-2026-01-06T103608 - A3B8 - 06012026.xlsx   Tue Jan  6 10:37:11 2026
+92223        10118      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Direction site de Gray/Documents   Tue Jan  6 10:18:23 2026
+92223        10118      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Direction site de Gray/Documents   Tue Jan  6 10:18:23 2026
+91790        10091      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Partage-PLASTI-KA/projets/SMRC-V8540-3222-23-24-25-26-27-28-29-30-31-32-33-34-35-F0415-F0416/3227-ASM Storage Panel Top Drawer TH-LHD/04-Moule/Plan moule/260105 - DFM REPORT   Tue Jan  6 10:00:02 2026
+92223        10118      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Direction site de Gray/Management/Année 2026   Tue Jan  6 10:18:23 2026
+92223        10118      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Direction site de Gray/Management/Année 2026   Tue Jan  6 10:18:23 2026
+92408        10081      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Partage-PLASTI-KA/projets/SMRC-V8540-3222-23-24-25-26-27-28-29-30-31-32-33-34-35-F0415-F0416/3231-Adaptater BB Switch TM-TH LHD-RHD + OBD LID TH-TM COM/03-Rheologie   Tue Jan  6 10:39:08 2026
+92408        10081      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Partage-PLASTI-KA/projets/SMRC-V8540-3222-23-24-25-26-27-28-29-30-31-32-33-34-35-F0415-F0416/3231-Adaptater BB Switch TM-TH LHD-RHD + OBD LID TH-TM COM/03-Rheologie   Tue Jan  6 10:39:08 2026
+91796        10166      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs2   Service Commercial/A.PETITJEAN/A Prix/3000 3013/~$010724 049.23 Rack V2 Exotec.xlsm   Tue Jan  6 10:47:46 2026
+91862        10360      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Partage-PLASTI-KA/projets/DAIMAY - BMW CF1 - 3061 - 3062 - 3063 - F0386 - F0387/3061 - Armatures NSOR LIT G-D/04 - Moule/Modification interne/260106-pavé cassé   Tue Jan  6 10:12:11 2026
+91862        10360      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Partage-PLASTI-KA/projets/DAIMAY - BMW CF1 - 3061 - 3062 - 3063 - F0386 - F0387/3061 - Armatures NSOR LIT G-D/04 - Moule/Modification interne/260106-pavé cassé   Tue Jan  6 10:12:11 2026
+91793        10376      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Ressources Humaines/THEMES RH/FORMATION/FORMATIONS   Tue Jan  6 10:17:39 2026
+91793        10376      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Ressources Humaines/THEMES RH/FORMATION/FORMATIONS   Tue Jan  6 10:17:39 2026
+91798        10119      DENY_NONE  0x120089    RDONLY     LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Service ADV/ARCHIVAGE ELECTRONIQUE COMMANDES CLIENT/SCHRADER/2025/COMMANDES/MK 2025104569  _127_376491.PDF   Tue Jan  6 10:09:50 2026
+91991        10306      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs2   Service Commercial/00-Clients/VALEO/PRIX/2880-2881 CD-COMRA SUV/TARIFS AU 06 02 2025 vérifiés/Moule 2881 E210030 ou E210031 ind E-1.xlsx   Tue Jan  6 10:21:37 2026
+92223        10118      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Direction site de Gray/Management   Tue Jan  6 10:18:23 2026
+92223        10118      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Direction site de Gray/Management   Tue Jan  6 10:18:23 2026
+92121        10035      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs2   Service DIRECTION/LANCEMENT/lancement 2026/Analyse SWOT 2026.pptx   Tue Jan  6 10:24:32 2026
+92002        10351      DENY_WRITE 0x13019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Service Production/Communication Technique/Com 2025/~$Com janvier 2026.xlsx   Tue Jan  6 10:10:58 2026
+91798        10119      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service ADV/ARCHIVAGE ELECTRONIQUE COMMANDES CLIENT/SITEM - 908864   Tue Jan  6 10:14:34 2026
+91798        10119      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service ADV/ARCHIVAGE ELECTRONIQUE COMMANDES CLIENT/SITEM - 908864   Tue Jan  6 10:14:34 2026
+91803        10385      DENY_NONE  0x1000a0    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service CAO/projets/DELTADORE/D2739 - Radio Stand - Covers - Touches/3139 - Covers et Touches/08 - Matiere/DM 1524 - chgt colorant noir   Tue Jan  6 10:19:57 2026
+93134        10209      DENY_WRITE 0x13019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Service Maintenance/MAINTENANCE EQUIPEMENT/05 - EQUIPEMENTS/04 - ARCHIVE GAMME DE MAINTENANCE et TABLEAU DE SUIVI/01 - GAMME DE MAINTENANCE A SIGNER/~$DS0044 Point de rosée.xlsx   Tue Jan  6 10:41:11 2026
+92847        10345      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   .   Tue Jan  6 10:25:10 2026
+92223        10118      DENY_NONE  0x80        RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   .   Tue Jan  6 10:17:33 2026
+92121        10035      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   .   Tue Jan  6 10:24:32 2026
+92076        10383      DENY_ALL   0x100080    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   .   Tue Jan  6 10:05:18 2026
+91991        10306      DENY_NONE  0x100080    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   .   Tue Jan  6 10:07:02 2026
+91954        10386      DENY_NONE  0x80        RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   .   Tue Jan  6 10:27:48 2026
+91881        10324      DENY_NONE  0x80        RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   .   Tue Jan  6 10:01:36 2026
+91860        10284      DENY_ALL   0x100080    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   .   Tue Jan  6 10:36:54 2026
+91819        10337      DENY_NONE  0x100080    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   .   Tue Jan  6 10:04:46 2026
+91802        10272      DENY_NONE  0x80        RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   .   Tue Jan  6 10:07:28 2026
+91796        10166      DENY_NONE  0x100080    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   .   Tue Jan  6 10:41:02 2026
+91795        10394      DENY_NONE  0x80        RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   .   Tue Jan  6 10:46:06 2026
+91793        10376      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   .   Tue Jan  6 10:19:37 2026
+91954        10386      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service CAO/projets/SOMFY - IGEA AXOVIA - 3104/3104 - Capot igea axovia/10 - Qualité-développement/Métrologie/Rapport de contrôle/T3   Tue Jan  6 10:27:42 2026
+91954        10386      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service CAO/projets/SOMFY - IGEA AXOVIA - 3104/3104 - Capot igea axovia/10 - Qualité-développement/Métrologie/Rapport de contrôle/T3   Tue Jan  6 10:27:42 2026
+91991        10306      DENY_WRITE 0x13019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs2   Service Commercial/00-Clients/VALEO/PRIX/2880-2881 CD-COMRA SUV/TARIFS AU 06 02 2025 vérifiés/~$Moule 2881 E210030 ou E210031 ind E-1.xlsx   Tue Jan  6 10:21:37 2026
+92223        10118      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Direction site de Gray/Amélioration Continue   Tue Jan  6 10:18:23 2026
+92223        10118      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Direction site de Gray/Amélioration Continue   Tue Jan  6 10:18:23 2026
+92847        10345      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs2   Service Financier/Direction Financière/PLASTIGRAY SAS/SIG & BILAN/2026/Budget/~$2026 BUDGET FRAIS GENERAUX FINANCE.xlsx   Tue Jan  6 10:25:10 2026
+91991        10306      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Commercial/00-Clients/VALEO/PRIX   Tue Jan  6 10:21:12 2026
+91991        10306      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Commercial/00-Clients/VALEO/PRIX   Tue Jan  6 10:21:12 2026
+91819        10337      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs2   Service Commercial/00-Clients/OP MOBILITY/Prix/3205-12-MAI 11+12 POE/~$115.25-MAI 1_1-251001.xlsx   Tue Jan  6 10:05:22 2026
+92223        10118      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Direction site de Gray/Activités   Tue Jan  6 10:18:23 2026
+92223        10118      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Direction site de Gray/Activités   Tue Jan  6 10:18:23 2026
+92223        10118      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Service Direction site de Gray/Activités/SSE - Environnement/Recyclage/~$Indicateur recyclage.xlsx   Tue Jan  6 10:11:04 2026
+91819        10337      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs2   Service Commercial/00-Clients/OP MOBILITY/Prix/3205-12-MAI 11+12 POE/115.25-MAI 1_1-251001.xlsx   Tue Jan  6 10:05:21 2026
+92002        10351      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Production/Communication Technique/Com 2025   Tue Jan  6 10:04:08 2026
+92002        10351      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Production/Communication Technique/Com 2025   Tue Jan  6 10:04:08 2026
+91798        10119      DENY_NONE  0x120089    RDONLY     LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Service ADV/ARCHIVAGE ELECTRONIQUE COMMANDES CLIENT/SCHRADER/2025/COMMANDES/MK 2025010143  _127_281074.PDF   Tue Jan  6 10:13:20 2026
+92136        10073      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   DOSSIER TEMPORAIRE COMMUN/mj/COTES 3148-002_T1.xls   Tue Jan  6 10:11:12 2026
+92847        10345      DENY_NONE  0x1000a0    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Financier/Direction Financière/PLASTIGRAY SAS/SIG & BILAN/2025/Budget   Tue Jan  6 10:25:27 2026
+92218        10003      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   DOSSIER TEMPORAIRE COMMUN/Online Releases To Suppliers-2026-01-06T103734 - 06012026.xlsx   Tue Jan  6 10:38:08 2026
+93901        10378      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:47:22 2026
+93454        10064      DENY_NONE  0x100080    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:45:25 2026
+93134        10209      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:33:39 2026
+92938        10209      DENY_NONE  0x80        RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:23:39 2026
+92929        10228      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:29:13 2026
+92847        10345      DENY_NONE  0x80        RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:21:14 2026
+92541        10391      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:38:51 2026
+92408        10081      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:11:41 2026
+92361        10009      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:10:44 2026
+92273        10070      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:10:45 2026
+92223        10118      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:21:33 2026
+92218        10003      DENY_NONE  0x100080    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:37:11 2026
+92136        10073      DENY_NONE  0x100080    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:06:34 2026
+92076        10383      DENY_ALL   0x100080    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:05:18 2026
+92002        10351      DENY_NONE  0x100080    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:04:09 2026
+91991        10306      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:08:01 2026
+91991        10306      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:07:13 2026
+91991        10306      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:07:07 2026
+91954        10386      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:27:18 2026
+91949        10328      DENY_NONE  0x100080    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:03:08 2026
+91881        10324      DENY_NONE  0x100080    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:01:25 2026
+91862        10360      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:01:37 2026
+91860        10284      DENY_ALL   0x100080    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:36:54 2026
+91803        10385      DENY_NONE  0x100080    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:02:25 2026
+91802        10272      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:07:28 2026
+91798        10119      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:12:51 2026
+91797        10368      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:00:32 2026
+91795        10394      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:05:39 2026
+91794        10093      DENY_NONE  0x100080    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:12:59 2026
+91793        10376      DENY_NONE  0x80        RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:00:20 2026
+91792        10355      DENY_NONE  0x80        RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:00:03 2026
+91790        10091      DENY_NONE  0x100080    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   .   Tue Jan  6 10:00:03 2026
+91798        10119      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service ADV/ARCHIVAGE ELECTRONIQUE COMMANDES CLIENT/SCHRADER/COMMUNICATIONS   Tue Jan  6 10:14:07 2026
+91798        10119      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service ADV/ARCHIVAGE ELECTRONIQUE COMMANDES CLIENT/SCHRADER/COMMUNICATIONS   Tue Jan  6 10:14:07 2026
+92218        10003      DENY_WRITE 0x13019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   DOSSIER TEMPORAIRE COMMUN/~$Online Releases To Suppliers-2026-01-06T103734 - 06012026.xlsx   Tue Jan  6 10:38:08 2026
+93409        10379      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Service ADV/EXPEDITIONS/Récap chargements hebdomadaires 2026.xlsx   Tue Jan  6 10:47:51 2026
+91795        10394      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   BUDGET Commercial Annuel/29-BUDGET ANNEE 2026/2026/PLASTIKA AU 16-12-2025   Tue Jan  6 10:15:24 2026
+91795        10394      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   BUDGET Commercial Annuel/29-BUDGET ANNEE 2026/2026/PLASTIKA AU 16-12-2025   Tue Jan  6 10:15:24 2026
+93901        10378      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Responsable Qualité/Gwanaelle STEPHAN/Routines_QUA-Gwen.docx   Tue Jan  6 10:47:37 2026
+92002        10351      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Service Production/Communication Technique/Com 2025/Com janvier 2026.xlsx   Tue Jan  6 10:14:31 2026
+91796        10166      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs2   Service Commercial/A.PETITJEAN/A Prix/3000 3013/010724 049.23 Rack V2 Exotec.xlsm   Tue Jan  6 10:47:45 2026
+91802        10272      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Service CAO/projets/PLASTIC OMNIUM/FlexEVan/3125 - Support capteur EXT UPA AR D&G/04 - Moule/note moule - essai - MAP/T2/2025 06 27 t2 the checking list of 3125.xlsx   Tue Jan  6 10:06:08 2026
+92223        10118      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Service Direction site de Gray/Activités/SSE - Environnement/Recyclage/Indicateur recyclage.xlsx   Tue Jan  6 10:11:04 2026
+91803        10385      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Service CAO/projets/DELTADORE/D2739 - Radio Stand - Covers - Touches/3139 - Covers et Touches/08 - Matiere/DM 1524 - chgt colorant noir/3139-DM_1524_3139_25 - proto et mesure échantillons Makrolon.xlsx   Tue Jan  6 10:19:58 2026
+92223        10118      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Direction site de Gray/Management/Année 2025   Tue Jan  6 10:18:23 2026
+92223        10118      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Direction site de Gray/Management/Année 2025   Tue Jan  6 10:18:23 2026
+92136        10073      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Métrologie/Logo Euronyl   Tue Jan  6 10:08:18 2026
+92136        10073      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Métrologie/Logo Euronyl   Tue Jan  6 10:08:18 2026
+92361        10009      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Methodes/André/DOSSIER DE FABRICATION/3151-3199/3191/Main de préhension/DFN Définitive   Tue Jan  6 10:10:40 2026
+92361        10009      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service Methodes/André/DOSSIER DE FABRICATION/3151-3199/3191/Main de préhension/DFN Définitive   Tue Jan  6 10:10:40 2026
+91792        10355      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs   Service CAO/Empreinte Carbone/ACTIA/Baisse empreinte carbone PICO   Tue Jan  6 10:00:02 2026
+91795        10394      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   BUDGET Commercial Annuel/29-BUDGET ANNEE 2026/2026/PLASTIKA AU 16-12-2025/2 - CA Achat 2026 CLIENTS PLASTIKA.xls   Tue Jan  6 10:46:06 2026
+91798        10119      DENY_NONE  0x120089    RDONLY     LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   Service ADV/ARCHIVAGE ELECTRONIQUE COMMANDES CLIENT/KOLLER MEXICO - 905592/FREE EXPORT DECLARATION FACTURE 129094.pdf   Tue Jan  6 10:05:34 2026
+91991        10306      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Commercial/00-Clients/VALEO/PRIX/2880-2881 CD-COMRA SUV/TARIFS AU 06 02 2025 vérifiés   Tue Jan  6 10:21:19 2026
+91991        10306      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Commercial/00-Clients/VALEO/PRIX/2880-2881 CD-COMRA SUV/TARIFS AU 06 02 2025 vérifiés   Tue Jan  6 10:21:19 2026
+92223        10118      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs   PAC et Revue de Direction/Revues de Direction 2025/Revue site de Gray/_suivi mensuel/Indicateurs mensuels PILOTAGE SITE 2025.xlsx   Tue Jan  6 10:17:06 2026
+91819        10337      DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/vdb1/samba/Utilisateurs2   Service Commercial/00-Clients/OP MOBILITY/Prix/3205-12-MAI 11+12 POE/115.25-MAI 1_2-251008.xlsx   Tue Jan  6 10:06:54 2026
+91991        10306      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Commercial   Tue Jan  6 10:20:58 2026
+91991        10306      DENY_NONE  0x100081    RDONLY     NONE             /mnt/vdb1/samba/Utilisateurs2   Service Commercial   Tue Jan  6 10:20:58 2026
+
