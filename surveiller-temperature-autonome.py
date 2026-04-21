@@ -25,25 +25,24 @@ TO_EMAIL = TO_EMAIL_TEMPERATURE
 LAST_OK_REPORT_FILE = "/tmp/surveiller-temperature-last-ok-report.txt"
 
 def get_temperature_data():
-    """Récupère la température moyenne sur 15 minutes et la batterie pour chaque capteur"""
+    """Récupère la dernière température et la batterie pour chaque capteur"""
     datasources = get_datasources(GRAFANA_URL, API_TOKEN)
     default_ds = find_default_datasource(datasources)
     
     if not default_ds:
         return []
     
-    # Requête pour obtenir la moyenne de température sur les 15 dernières minutes par capteur
+    # Requête pour obtenir la dernière température connue par capteur
     sql_temp = """
-    SELECT 
-        capteur, 
-        AVG(value) as temperature,
-        MAX(time) as time
+    SELECT DISTINCT ON (capteur)
+        capteur,
+        value as temperature,
+        time
     FROM sensor_data
     WHERE measurement = 'MI_TEMPERATURE'
       AND time > NOW() - INTERVAL '60 minutes'
       and capteur in ('1','2','3')
-    GROUP BY capteur
-    ORDER BY capteur
+    ORDER BY capteur, time DESC
     """
     
     # Requête pour obtenir le dernier niveau de batterie de chaque capteur
