@@ -2,6 +2,22 @@
 """
 Script autonome de surveillance température - SANS Grafana Alerting
 Interroge directement TimescaleDB et envoie des emails
+
+Fonctionnement (destiné à être lancé périodiquement, ex. via cron) :
+1. get_temperature_data() interroge TimescaleDB (via l'API Grafana/datasource)
+   pour récupérer, pour chaque capteur (1, 2, 3), la dernière température
+   connue (sur les 60 dernières minutes) et le dernier niveau de batterie.
+2. main() compare chaque température à ses seuils min/max (TEMPERATURE_THRESHOLDS),
+   détecte les capteurs sans données récentes (> SENSOR_NO_DATA_MINUTES) et les
+   batteries faibles (<= BATTERY_LOW_THRESHOLD).
+3. Un email HTML récapitulatif (send_summary_email) est envoyé uniquement si :
+   - une anomalie est détectée (température hors plage, pas de données, batterie
+     faible) -> envoi systématique, et la date du dernier rapport "OK" est effacée
+     pour forcer un rapport de confirmation une fois le problème résolu ;
+   - ou aucune anomalie mais aucun rapport "tout va bien" n'a encore été envoyé
+     aujourd'hui (should_send_ok_report / LAST_OK_REPORT_FILE) -> un seul rapport
+     OK quotidien est envoyé, sa date étant sauvegardée pour éviter les doublons.
+4. Sinon, aucun email n'est envoyé (juste un message affiché en console).
 """
 
 from datetime import datetime, timezone

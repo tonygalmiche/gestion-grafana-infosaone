@@ -2,6 +2,32 @@
 """
 Script autonome de surveillance disque - SANS Grafana Alerting
 Interroge directement TimescaleDB et envoie des emails
+
+Fonctionnement (destiné à être lancé périodiquement, ex. via cron) :
+1. get_all_known_hosts() interroge la table system (métrique load1, envoyée en
+   continu par tout agent Telegraf actif) SANS limite de temps, afin d'obtenir
+   la liste complète des hosts déjà connus et leur dernier contact. C'est cette
+   liste qui sert de référence : un host qui cesse totalement d'envoyer des
+   données (y compris ses métriques disque) continue donc à apparaître dans le
+   rapport, avec une alerte "no data", au lieu de disparaître silencieusement.
+2. get_disk_usage() interroge ensuite la table disk pour récupérer l'utilisation
+   max (used_percent, sur les 10 dernières minutes) des hosts qui en ont envoyé
+   récemment, et la rattache à la liste ci-dessus (usage = None/"N/A" sinon) ;
+   get_load_averages() récupère en plus la moyenne du load1 sur les 30 dernières
+   minutes par host.
+3. main() exclut les hosts listés dans DISK_EXCLUDED_HOSTS, puis compare pour
+   chaque host actif son utilisation disque (si connue) et son load1 aux seuils
+   (globaux ou spécifiques par host via DISK_USAGE_THRESHOLD_PER_HOST /
+   LOAD1_THRESHOLD_PER_HOST), et détecte les hosts sans données récentes
+   (> HOST_NO_DATA_MINUTES, calculé sur le dernier contact issu de system).
+4. Un email HTML récapitulatif (send_summary_email) est envoyé uniquement si :
+   - une anomalie est détectée (disque ou load1 hors seuil, pas de données)
+     -> envoi systématique, et la date du dernier rapport "OK" est effacée
+     pour forcer un rapport de confirmation une fois le problème résolu ;
+   - ou aucune anomalie mais aucun rapport "tout va bien" n'a encore été envoyé
+     aujourd'hui (should_send_ok_report / LAST_OK_REPORT_FILE) -> un seul rapport
+     OK quotidien est envoyé, sa date étant sauvegardée pour éviter les doublons.
+5. Sinon, aucun email n'est envoyé (juste un message affiché en console).
 """
 
 from datetime import datetime, timezone
@@ -28,18 +54,63 @@ def get_host_load_threshold(hostname):
     """Retourne le seuil load1 pour un host donné"""
     return LOAD1_THRESHOLD_PER_HOST.get(hostname, LOAD1_THRESHOLD)
 
-def get_disk_usage():
-    """Récupère l'utilisation disque de tous les hosts"""
+def get_all_known_hosts():
+    """Récupère tous les hosts connus (via la métrique load1 de la table system,
+    envoyée en continu par tout agent Telegraf actif) et leur dernier contact,
+    SANS limite de temps. Sert de liste de référence pour ne pas perdre de vue
+    un host qui a totalement cessé d'envoyer des données."""
     datasources = get_datasources(GRAFANA_URL, API_TOKEN)
     default_ds = find_default_datasource(datasources)
-    
+
+    if not default_ds:
+        return {}
+
+    sql = """
+    SELECT DISTINCT ON (host)
+        host,
+        time
+    FROM system
+    ORDER BY host, time DESC
+    """
+
+    results = query_timescale(GRAFANA_URL, API_TOKEN, default_ds.get('uid'), sql)
+
+    hosts_dict = {}
+    if results and 'results' in results:
+        for result in results.get('results', {}).values():
+            if 'frames' in result:
+                for frame in result['frames']:
+                    data_values = frame.get('data', {}).get('values', [])
+
+                    if len(data_values) >= 2:
+                        hosts = data_values[0]
+                        timestamps = data_values[1]
+
+                        for i in range(len(hosts)):
+                            ts = timestamps[i] / 1000  # millisecondes vers secondes
+                            hosts_dict[hosts[i]] = datetime.fromtimestamp(ts, tz=timezone.utc)
+
+    return hosts_dict
+
+def get_disk_usage():
+    """Récupère l'utilisation disque de tous les hosts connus. Un host connu
+    (cf. get_all_known_hosts) mais sans donnée disque récente apparaît quand
+    même, avec usage = None (affiché en N/A)."""
+    known_hosts = get_all_known_hosts()
+
+    if not known_hosts:
+        return []
+
+    datasources = get_datasources(GRAFANA_URL, API_TOKEN)
+    default_ds = find_default_datasource(datasources)
+
     if not default_ds:
         return []
-    
-    # Requête pour obtenir le used_percent maximum par host
+
+    # Requête pour obtenir le used_percent maximum par host sur les hosts actifs récemment
     sql_usage = """
-    SELECT DISTINCT ON (host) 
-        host, 
+    SELECT DISTINCT ON (host)
+        host,
         path,
         used_percent
     FROM disk
@@ -52,69 +123,34 @@ def get_disk_usage():
         and time >= (CURRENT_TIMESTAMP AT TIME ZONE 'UTC' - INTERVAL '10 minutes')
     ORDER BY host, used_percent DESC
     """
-    
-    # Requête pour obtenir le dernier contact par host
-    sql_time = """
-    SELECT DISTINCT ON (host) 
-        host,
-        time
-    FROM disk
-    WHERE   path not like '/snap%'
-        and path not like '/sys%'
-        and path not like '/mnt/PK-%'
-        and path not like '/boot%'
-        and path not like '/run%'
-    ORDER BY host, time DESC
-    """
 
     # Récupérer les données d'utilisation
     results_usage = query_timescale(GRAFANA_URL, API_TOKEN, default_ds.get('uid'), sql_usage)
-    
-    if not results_usage or 'results' not in results_usage:
-        return []
-    
-    # Récupérer les données de temps
-    results_time = query_timescale(GRAFANA_URL, API_TOKEN, default_ds.get('uid'), sql_time)
-    
-    if not results_time or 'results' not in results_time:
-        return []
-    
-    # Extraire les timestamps par host
-    time_dict = {}
-    for result in results_time.get('results', {}).values():
-        if 'frames' in result:
-            for frame in result['frames']:
-                data_values = frame.get('data', {}).get('values', [])
-                
-                if len(data_values) >= 2:
-                    hosts = data_values[0]
-                    timestamps = data_values[1]
-                    
-                    for i in range(len(hosts)):
-                        ts = timestamps[i] / 1000  # millisecondes vers secondes
-                        time_dict[hosts[i]] = datetime.fromtimestamp(ts, tz=timezone.utc)
-    
-    # Extraire les données d'utilisation et combiner avec les timestamps
+
+    # Extraire les données d'utilisation par host
+    usage_dict = {}
+    if results_usage and 'results' in results_usage:
+        for result in results_usage.get('results', {}).values():
+            if 'frames' in result:
+                for frame in result['frames']:
+                    data_values = frame.get('data', {}).get('values', [])
+
+                    if len(data_values) >= 3:
+                        hosts = data_values[0]
+                        paths = data_values[1]
+                        percentages = data_values[2]
+
+                        for i in range(len(hosts)):
+                            usage_dict[hosts[i]] = int(round(percentages[i]))
+
+    # Combiner la liste de référence des hosts avec l'utilisation disque connue
     hosts_dict = {}
-    for result in results_usage.get('results', {}).values():
-        if 'frames' in result:
-            for frame in result['frames']:
-                data_values = frame.get('data', {}).get('values', [])
-                
-                if len(data_values) >= 3:
-                    hosts = data_values[0]
-                    paths = data_values[1]
-                    percentages = data_values[2]
-                    
-                    for i in range(len(hosts)):
-                        hostname = hosts[i]
-                        usage = int(round(percentages[i]))
-                        
-                        hosts_dict[hostname] = {
-                            'host': hostname,
-                            'usage': usage,
-                            'last_contact': time_dict.get(hostname, datetime.now(timezone.utc))
-                        }
+    for hostname, last_contact in known_hosts.items():
+        hosts_dict[hostname] = {
+            'host': hostname,
+            'usage': usage_dict.get(hostname, None),
+            'last_contact': last_contact
+        }
 
     return list(hosts_dict.values())
 
@@ -170,9 +206,9 @@ def build_subject(all_hosts, threshold, no_data_minutes):
     nb_no_data = len(hosts_no_data)
     
     # Calculer le nombre de hosts avec alerte disque et load1
-    nb_disk_alerts = len([h for h in all_hosts if h['usage'] > get_host_disk_threshold(h['host'])])
+    nb_disk_alerts = len([h for h in all_hosts if h['usage'] is not None and h['usage'] > get_host_disk_threshold(h['host'])])
     nb_load_alerts = len([h for h in all_hosts if h.get('load1') is not None and h['load1'] > get_host_load_threshold(h['host'])])
-    
+
     # Date et heure pour le sujet
     now_paris = datetime.now(ZoneInfo('Europe/Paris'))
     date_time_str = now_paris.strftime('%d/%m %H:%M')
@@ -206,9 +242,9 @@ def send_summary_email(all_hosts, alerts, threshold, no_data_minutes, excluded_h
     nb_no_data = len(hosts_no_data)
     
     # Calculer le nombre de hosts avec alerte disque et load1
-    nb_disk_alerts = len([h for h in all_hosts if h['usage'] > get_host_disk_threshold(h['host'])])
+    nb_disk_alerts = len([h for h in all_hosts if h['usage'] is not None and h['usage'] > get_host_disk_threshold(h['host'])])
     nb_load_alerts = len([h for h in all_hosts if h.get('load1') is not None and h['load1'] > get_host_load_threshold(h['host'])])
-    
+
     # Construire le sujet
     subject = build_subject(all_hosts, threshold, no_data_minutes)
     
@@ -265,22 +301,25 @@ def send_summary_email(all_hosts, alerts, threshold, no_data_minutes, excluded_h
     
     for host_data in sorted_hosts:
         host_disk_threshold = get_host_disk_threshold(host_data['host'])
-        is_alert = host_data['usage'] > host_disk_threshold
-        
+        usage = host_data['usage']
+        is_alert = usage is not None and usage > host_disk_threshold
+
         # Vérifier si pas de données récentes
         time_diff = (now - host_data['last_contact']).total_seconds()
         is_no_data = time_diff > no_data_minutes * 60
-        
+
         # Formater le dernier contact en heure de Paris
         last_contact_paris = host_data['last_contact'].astimezone(ZoneInfo('Europe/Paris'))
         last_contact_str = last_contact_paris.strftime('%d/%m %H:%M')
-        
-        # Formater l'utilisation disque avec seuil si alerte
-        if is_alert:
-            usage_str = f"{host_data['usage']}>{host_disk_threshold}"
+
+        # Formater l'utilisation disque avec seuil si alerte (N/A si aucune donnée récente)
+        if usage is None:
+            usage_str = "N/A"
+        elif is_alert:
+            usage_str = f"{usage}>{host_disk_threshold}"
         else:
-            usage_str = f"{host_data['usage']}%"
-        
+            usage_str = f"{usage}%"
+
         # Récupérer le load1 pour ce host
         load1 = host_data.get('load1', None)
         if load1 is not None:
@@ -301,7 +340,7 @@ def send_summary_email(all_hosts, alerts, threshold, no_data_minutes, excluded_h
         status_icon = "🔴" if has_anomaly else "✅"
         
         # Styles des cellules - fond rouge uniquement pour la cellule en alerte
-        usage_style = 'style="background-color: red; color: white; font-weight: bold;"' if is_alert else 'style="color: green;"'
+        usage_style = 'style="background-color: red; color: white; font-weight: bold;"' if is_alert else ('style="color: gray;"' if usage is None else 'style="color: green;"')
         load_style = 'style="background-color: red; color: white; font-weight: bold;"' if is_load_alert else ('style="color: gray;"' if load1 is None else '')
         contact_style = 'style="background-color: red; color: white; font-weight: bold;"' if is_no_data else ''
         
@@ -344,9 +383,11 @@ Liste des serveurs :
     
     for host_data in sorted_hosts:
         host_disk_threshold = get_host_disk_threshold(host_data['host'])
-        is_alert = host_data['usage'] > host_disk_threshold
+        usage = host_data['usage']
+        is_alert = usage is not None and usage > host_disk_threshold
         status = "🔴 ALERTE" if is_alert else "✅ OK    "
-        text_body += f"{status}  {host_data['host']:<40} {host_data['usage']:>6.1f}%\n"
+        usage_str = f"{usage:>5.1f}%" if usage is not None else "  N/A "
+        text_body += f"{status}  {host_data['host']:<40} {usage_str}\n"
     
     text_body += f"\n{'='*50}\n"
     
@@ -384,14 +425,14 @@ def main():
     active_hosts = [h for h in hosts_data if h['host'] not in DISK_EXCLUDED_HOSTS]
     
     # Trouver les alertes (disques > seuil OU load1 > seuil) parmi les hosts actifs uniquement
-    alerts = [h for h in active_hosts if h['usage'] > get_host_disk_threshold(h['host']) or (h.get('load1') is not None and h['load1'] > get_host_load_threshold(h['host']))]
-    
+    alerts = [h for h in active_hosts if (h['usage'] is not None and h['usage'] > get_host_disk_threshold(h['host'])) or (h.get('load1') is not None and h['load1'] > get_host_load_threshold(h['host']))]
+
     # Calculer les anomalies
     now = datetime.now(timezone.utc)
     hosts_no_data = [h for h in active_hosts if (now - h['last_contact']).total_seconds() > HOST_NO_DATA_MINUTES * 60]
-    
+
     nb_total = len(active_hosts)
-    nb_disk_alerts = len([h for h in active_hosts if h['usage'] > get_host_disk_threshold(h['host'])])
+    nb_disk_alerts = len([h for h in active_hosts if h['usage'] is not None and h['usage'] > get_host_disk_threshold(h['host'])])
     nb_load_alerts = len([h for h in active_hosts if h.get('load1') is not None and h['load1'] > get_host_load_threshold(h['host'])])
     nb_no_data = len(hosts_no_data)
     
