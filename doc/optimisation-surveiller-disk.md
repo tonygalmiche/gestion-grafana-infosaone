@@ -118,6 +118,10 @@ Résultat vérifié (EXPLAIN ANALYZE) : le chunk courant utilise désormais un `
 
 ✅ **`grafana_utils.py` corrigé** : ajout d'une `requests.Session()` partagée pour réutiliser les connexions HTTP entre les appels à l'API Grafana.
 
-⏳ **À faire manuellement sur le serveur** : mettre `GRAFANA_URL = "http://127.0.0.1:3000"` dans le `config.py` déployé sur le serveur Grafana (voir point 4 ci-dessus). Pas encore appliqué.
+✅ **Résultat final confirmé en production (2026-09-02, 18:49)** :
+```
+real    0m0,727s
+```
+contre 1m14s au départ — gain de plus de 99%. Les deux correctifs (index + session HTTP) ont suffi ; le changement de `GRAFANA_URL` vers `http://127.0.0.1:3000` (point 4) n'a **pas** été nécessaire pour atteindre ce résultat et reste optionnel si de nouveaux blocages réseau intermittents étaient observés à l'avenir.
 
 Point 3 (dédoublonnage de `get_datasources()` dans le script) reste optionnel et n'a pas été appliqué.
