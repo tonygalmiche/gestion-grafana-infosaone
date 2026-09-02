@@ -14,6 +14,13 @@ from zoneinfo import ZoneInfo
 from typing import List, Dict, Union
 import sys
 
+# Session HTTP partagée : réutilise la même connexion TCP/TLS (keep-alive)
+# pour tous les appels vers Grafana, au lieu d'en ouvrir une nouvelle à
+# chaque requête. Evite de multiplier les connexions "à froid" qui peuvent
+# rester bloquées de longues secondes (ex: hairpin NAT quand le script
+# tourne sur le serveur Grafana lui-même et rappelle son propre nom public).
+_session = requests.Session()
+
 
 def make_grafana_request(
     grafana_url: str,
@@ -55,13 +62,13 @@ def make_grafana_request(
     
     try:
         if method.upper() == "GET":
-            response = requests.get(url, headers=headers, auth=auth)
+            response = _session.get(url, headers=headers, auth=auth)
         elif method.upper() == "POST":
-            response = requests.post(url, headers=headers, auth=auth, json=data)
+            response = _session.post(url, headers=headers, auth=auth, json=data)
         elif method.upper() == "PUT":
-            response = requests.put(url, headers=headers, auth=auth, json=data)
+            response = _session.put(url, headers=headers, auth=auth, json=data)
         elif method.upper() == "DELETE":
-            response = requests.delete(url, headers=headers, auth=auth)
+            response = _session.delete(url, headers=headers, auth=auth)
         else:
             raise ValueError(f"Méthode HTTP non supportée: {method}")
         
