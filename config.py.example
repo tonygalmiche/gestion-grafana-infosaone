@@ -23,6 +23,11 @@ TEMPERATURE_THRESHOLDS = {
 SENSOR_NO_DATA_MINUTES = 10  # Nombre de minutes sans données avant alerte capteur
 BATTERY_LOW_THRESHOLD = 20   # Pourcentage de batterie minimum avant alerte
 
+# Surveillance portsentry (surveiller-portsentry.py) - paramètres optionnels
+PORTSENTRY_EXCLUDED_HOSTS = [   # Hosts à ne pas surveiller (ex. fausses détections permanentes)
+]
+PORTSENTRY_NO_DATA_MINUTES = 10  # Minutes sans relevé portsentry (host actif) avant alerte
+
 # Configuration SMTP pour l'envoi d'emails
 SMTP_SERVER = "smtp.example.com"  # ou smtp.gmail.com, smtp.office365.com, ssl0.ovh.net, etc.
 SMTP_PORT = 465  # 587 pour TLS, 465 pour SSL, 25 pour sans chiffrement
