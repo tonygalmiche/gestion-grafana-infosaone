@@ -365,6 +365,12 @@ def send_summary_email(scanned, silent_hosts, recovered_hosts, hosts_by_name, si
 
     text_body = f"Rapport portsentry\n{'='*50}\n\nPériode analysée : {period_str}\n\n"
 
+    # Sources des scans en premier : c'est l'information à exploiter
+    if any(h['host'] in sources for h in scanned):
+        table_html, table_text = sources_table(scanned, sources)
+        html_body += table_html
+        text_body += table_text + "\n"
+
     if all_hosts:
         table_html, table_text = all_hosts_table(hosts_by_name, silent_hosts)
         html_body += table_html
@@ -399,10 +405,6 @@ def send_summary_email(scanned, silent_hosts, recovered_hosts, hosts_by_name, si
 """
 
     if scanned:
-        if any(h['host'] in sources for h in scanned):
-            table_html, table_text = sources_table(scanned, sources)
-            html_body += table_html
-            text_body += "\n" + table_text
         # Hosts sans détail des sources (portsentry-src.sh pas encore déployé, requête en erreur...)
         no_source = [h['host'] for h in scanned if h['host'] not in sources]
         no_source_html = no_source_text = ""
