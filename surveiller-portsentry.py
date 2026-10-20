@@ -14,6 +14,10 @@ Fonctionnement (destiné à être lancé périodiquement, ex. via cron) :
    chaque host, le dernier relevé reçu et les relevés > 0 de la période (pic,
    nombre, première et dernière détection). Chaque relevé compte les scans de
    la minute écoulée (script Telegraf à 60 s) ; on utilise max() pour le pic.
+   get_portsentry_sources() lit ensuite, pour les seuls hosts scannés, la table
+   portsentry_src (une ligne par IP source et port, script Telegraf
+   portsentry-src.sh) : le mail affiche le tableau « Sources des scans ».
+   En cas d'erreur (table absente...), l'alerte part sans ce détail.
 3. get_active_hosts() liste les hosts qui envoient des données dans system :
    un host qui a déjà envoyé du portsentry, qui est actif, mais dont la
    remontée portsentry s'est arrêtée (> PORTSENTRY_NO_DATA_MINUTES) est
@@ -161,6 +165,54 @@ def get_portsentry_data(datasource_uid, since, until):
     return hosts
 
 
+def get_portsentry_sources(datasource_uid, since, until, host_names):
+    """Récupère, pour les hosts scannés, les IP sources et les ports de la période
+    (table portsentry_src, alimentée par /opt/telegraf/portsentry-src.sh).
+    Retourne {host: [{'src', 'ports', 'nb'}, ...]}, vide si la requête a échoué :
+    l'alerte part quand même, sans le détail des sources."""
+    if not host_names:
+        return {}
+    since_sql = since.strftime(SQL_FORMAT)
+    until_sql = until.strftime(SQL_FORMAT)
+    hosts_sql = ', '.join("'" + name.replace("'", "''") + "'" for name in host_names)
+
+    sql = f"""
+    SELECT host, src, string_agg(port, ', ' ORDER BY port::int) AS ports, sum(nb)::bigint AS nb
+    FROM (
+        SELECT host, src, port::text AS port, sum(value) AS nb
+        FROM portsentry_src
+        WHERE time > '{since_sql}' AND time <= '{until_sql}' AND host IN ({hosts_sql})
+        GROUP BY host, src, port
+    ) AS p
+    GROUP BY host, src
+    ORDER BY host, nb DESC
+    """
+
+    results = query_timescale(GRAFANA_URL, API_TOKEN, datasource_uid, sql)
+
+    if not results or 'results' not in results:
+        print("Erreur requête portsentry_src : pas de réponse")
+        return {}
+
+    sources = {}
+    for result in results.get('results', {}).values():
+        if 'error' in result:
+            print(f"Erreur requête portsentry_src : {result['error']}")
+            return {}
+        for frame in result.get('frames', []):
+            data_values = frame.get('data', {}).get('values', [])
+
+            if len(data_values) >= 4:
+                for i in range(len(data_values[0])):
+                    sources.setdefault(data_values[0][i], []).append({
+                        'src': data_values[1][i],
+                        'ports': data_values[2][i],
+                        'nb': data_values[3][i],
+                    })
+
+    return sources
+
+
 def get_active_hosts(datasource_uid):
     """Retourne les hosts qui envoient des données dans system (None si erreur)"""
     sql = f"""
@@ -252,7 +304,38 @@ def all_hosts_table(hosts_by_name, silent_hosts):
     return html, text
 
 
-def send_summary_email(scanned, silent_hosts, recovered_hosts, hosts_by_name, since, until, all_hosts=False):
+def sources_table(scanned, sources):
+    """Tableau HTML et texte des IP sources et ports, par host scanné"""
+    html = """
+    <h3>Sources des scans</h3>
+    <table>
+        <tr>
+            <th>Serveur</th>
+            <th>IP source</th>
+            <th>Ports</th>
+            <th style="text-align: right;">Scans</th>
+        </tr>
+"""
+    text = "Sources des scans :\n"
+    for h in scanned:
+        for s in sources.get(h['host'], []):
+            html += f"""
+        <tr>
+            <td>{h['host']}</td>
+            <td><strong>{s['src']}</strong></td>
+            <td>{s['ports']}</td>
+            <td style="text-align: right;">{s['nb']}</td>
+        </tr>
+"""
+            text += f"{h['host']:<30} <- {s['src']:<15} ports {s['ports']}  ({s['nb']} scans)\n"
+    html += """
+    </table>
+"""
+    return html, text
+
+
+def send_summary_email(scanned, silent_hosts, recovered_hosts, hosts_by_name, since, until, sources,
+                       all_hosts=False):
     """Envoie l'email récapitulatif (all_hosts : tableau de tous les hosts, option --mail oui)"""
     subject = build_subject(scanned, silent_hosts, recovered_hosts, len(hosts_by_name))
     period_str = f"du {format_paris(since)} au {format_paris(until)}"
@@ -316,13 +399,24 @@ def send_summary_email(scanned, silent_hosts, recovered_hosts, hosts_by_name, si
 """
 
     if scanned:
-        html_body += """
+        if any(h['host'] in sources for h in scanned):
+            table_html, table_text = sources_table(scanned, sources)
+            html_body += table_html
+            text_body += "\n" + table_text
+        # Hosts sans détail des sources (portsentry-src.sh pas encore déployé, requête en erreur...)
+        no_source = [h['host'] for h in scanned if h['host'] not in sources]
+        no_source_html = no_source_text = ""
+        if no_source:
+            no_source_html = (f"<br>Source non remontée pour {', '.join(no_source)}, détail sur le host : "
+                              f"<code>journalctl -t portsentry | grep -E \"from host|Scan from\"</code>")
+            no_source_text = (f"\nSource non remontée pour {', '.join(no_source)}, détail sur le host : "
+                              f"journalctl -t portsentry | grep -E \"from host|Scan from\"\n")
+        html_body += f"""
     <p style="color: #666; font-size: 12px;">
-        Pic = nombre maximal de scans détectés en une minute. Détail (IP source, ports) sur le host :
-        <code>journalctl -t portsentry | grep -E "from host|Scan from"</code>
+        Pic = nombre maximal de scans détectés en une minute.{no_source_html}
     </p>
 """
-        text_body += "\nDétail sur le host : journalctl -t portsentry | grep -E \"from host|Scan from\"\n\n"
+        text_body += no_source_text + "\n"
 
     if not all_hosts and (silent_hosts or recovered_hosts):
         html_body += """
@@ -380,13 +474,15 @@ def send_summary_email(scanned, silent_hosts, recovered_hosts, hosts_by_name, si
     )
 
 
-def print_summary(scanned, silent_hosts, recovered_hosts, hosts_by_name, since, until):
+def print_summary(scanned, silent_hosts, recovered_hosts, hosts_by_name, since, until, sources):
     """Affiche le résultat en console (option --mail non)"""
     print(f"{build_subject(scanned, silent_hosts, recovered_hosts, len(hosts_by_name))} - mode --mail non")
     print(f"Période analysée : du {format_paris(since)} au {format_paris(until)}")
     for h in scanned:
         print(f"  🔴 {h['host']:<30} {format_paris(h['first_scan'])} -> {format_paris(h['last_scan'])}"
               f"  pic {h['peak']}  ({h['nb']} relevés)")
+        for s in sources.get(h['host'], []):
+            print(f"       <- {s['src']:<15} ports {s['ports']}  ({s['nb']} scans)")
     for name in silent_hosts:
         print(f"  🟠 {name:<30} remontée arrêtée, dernier relevé {format_paris(hosts_by_name[name]['last_seen'])}")
     for name in recovered_hosts:
@@ -444,13 +540,16 @@ def main():
         and (now - hosts_by_name[name]['last_seen']).total_seconds() <= PORTSENTRY_NO_DATA_MINUTES * 60
     )
 
+    # IP sources et ports des hosts scannés (vide si la table portsentry_src est absente ou en erreur)
+    sources = get_portsentry_sources(default_ds.get('uid'), since, until, [h['host'] for h in scanned])
+
     if args.mail == 'non':
-        print_summary(scanned, silent_hosts, recovered_hosts, hosts_by_name, since, until)
+        print_summary(scanned, silent_hosts, recovered_hosts, hosts_by_name, since, until, sources)
         return
 
     if args.mail == 'oui' or scanned or new_silent or recovered_hosts:
         subject, sent = send_summary_email(scanned, silent_hosts, recovered_hosts, hosts_by_name, since, until,
-                                           all_hosts=(args.mail == 'oui'))
+                                           sources, all_hosts=(args.mail == 'oui'))
         if not sent:
             # Email non parti : on garde l'ancien état pour renvoyer au prochain passage
             print(f"{subject} - Erreur envoi email, période reprise au prochain passage")
